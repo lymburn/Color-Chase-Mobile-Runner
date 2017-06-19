@@ -16,6 +16,8 @@
 #include "ImageManager.hpp"
 #include "ActionPerformer.hpp"
 #include "LevelChooserScene.hpp"
+#include "ui/CocosGUI.h"
+#include "TutorialScene.hpp"
 
 class TitleScene : public cocos2d::Scene {
     

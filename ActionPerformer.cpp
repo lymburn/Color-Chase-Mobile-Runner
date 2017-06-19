@@ -15,3 +15,75 @@ void ActionPerformer::fadeInAndOut(Node* target) {
     auto seq = Sequence::create(move1, move2, delay, NULL);
     target->runAction(RepeatForever::create(seq));
 }
+
+void ActionPerformer::parallaxScrolling(Node* closeTreesI, Node* midTreesI, Node* farTreesI, Node* mountainsI, Node* cloudsI, Node* closeTreesF, Node* midTreesF, Node* farTreesF, Node* mountainsF,Node* cloudsF) {
+
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    float initialCloseTreesTime, initialMidTreesTime, initialFarTreesTime, initialMountainsTime, initialCloudsTime, closeTreesTimeF, midTreesTimeF, farTreesTimeF, mountainsTimeF, cloudsTimeF;
+    //Initial times for the first panel to move out of screen
+    initialCloseTreesTime = 4;
+    initialMidTreesTime= 6;
+    initialFarTreesTime= 8;
+    initialMountainsTime = 20;
+    initialCloudsTime = 15;
+
+    //Times for the following panel
+    closeTreesTimeF = 2*initialCloseTreesTime;
+    midTreesTimeF = 2*initialMidTreesTime;
+    farTreesTimeF = 2*initialFarTreesTime;
+    mountainsTimeF = 2*initialMountainsTime;
+    cloudsTimeF = 2*initialCloudsTime;
+    
+    //Moves, sequences, and callbacks for the initial panel
+    auto closeTreesMoveI = MoveBy::create(initialCloseTreesTime,Vec2(-visibleSize.width, 0));
+    auto midTreesMoveI = MoveBy::create(initialMidTreesTime, Vec2(-visibleSize.width,0));
+    auto farTreesMoveI = MoveBy::create(initialFarTreesTime, Vec2(-visibleSize.width,0));
+    auto mountainsMoveI = MoveBy::create(initialMountainsTime, Vec2(-visibleSize.width,0));
+    auto cloudsMoveI = MoveBy::create(initialCloudsTime, Vec2(-visibleSize.width,0));
+    
+    auto closeTreesCbI = CallFunc::create([=]() {closeTreesI->setPosition(Vec2(visibleSize.width,0));});
+    auto midTreesCbI = CallFunc::create([=]() {midTreesI->setPosition(Vec2(visibleSize.width,0));});
+    auto farTreesCbI = CallFunc::create([=]() {farTreesI->setPosition(Vec2(visibleSize.width,0));});
+    auto mountainsCbI = CallFunc::create([=]() {mountainsI->setPosition(Vec2(visibleSize.width,0));});
+    auto cloudsCbI = CallFunc::create([=]() {cloudsI->setPosition(Vec2(visibleSize.width,0));});
+    
+    auto closeTreesSeqI = Sequence::create(closeTreesMoveI,closeTreesCbI,closeTreesMoveI->clone(),NULL);
+    auto midTreesSeqI = Sequence::create(midTreesMoveI,midTreesCbI,midTreesMoveI->clone(),NULL);
+    auto farTreesSeqI = Sequence::create(farTreesMoveI,farTreesCbI,farTreesMoveI->clone(),NULL);
+    auto mountainsSeqI = Sequence::create(mountainsMoveI,mountainsCbI,mountainsMoveI->clone(),NULL);
+    auto cloudsSeqI = Sequence::create(cloudsMoveI,cloudsCbI,cloudsMoveI->clone(),NULL);
+    
+    
+    //Moves,sequence, and callback for the following panel
+    auto closeTreesMoveF = MoveTo::create(closeTreesTimeF, Vec2(-visibleSize.width, 0));
+    auto midTreesMoveF = MoveTo::create(midTreesTimeF, Vec2(-visibleSize.width, 0));
+    auto farTreesMoveF = MoveTo::create(farTreesTimeF,Vec2(-visibleSize.width, 0));
+    auto mountainsMoveF = MoveTo::create(mountainsTimeF,Vec2(-visibleSize.width, 0));
+    auto cloudsMoveF = MoveTo::create(cloudsTimeF,Vec2(-visibleSize.width, 0));
+    
+    auto closeTreesCbF = CallFunc::create([=]() {closeTreesF->setPosition(Vec2(visibleSize.width,0));});
+    auto midTreesCbF = CallFunc::create([=]() {midTreesF->setPosition(Vec2(visibleSize.width,0));});
+    auto farTreesCbF = CallFunc::create([=]() {farTreesF->setPosition(Vec2(visibleSize.width,0));});
+    auto mountainsCbF = CallFunc::create([=]() {mountainsF->setPosition(Vec2(visibleSize.width,0));});
+    auto cloudsCbF = CallFunc::create([=]() {cloudsF->setPosition(Vec2(visibleSize.width,0));});
+    
+    auto closeTreesSeqF = Sequence::create(closeTreesMoveF, closeTreesCbF, NULL);
+    auto midTreesSeqF = Sequence::create(midTreesMoveF, midTreesCbF, NULL);
+    auto farTreesSeqF = Sequence::create(farTreesMoveF, farTreesCbF, NULL);
+    auto mountainsSeqF = Sequence::create(mountainsMoveF, mountainsCbF, NULL);
+    auto cloudsSeqF = Sequence::create(cloudsMoveF, cloudsCbF, NULL);
+    
+    //Run the actions
+    closeTreesI->runAction(RepeatForever::create(closeTreesSeqI));
+    midTreesI->runAction(RepeatForever::create(midTreesSeqI));
+    farTreesI->runAction(RepeatForever::create(farTreesSeqI));
+    mountainsI->runAction(RepeatForever::create(mountainsSeqI));
+    cloudsI->runAction(RepeatForever::create(cloudsSeqI));
+    
+    closeTreesF -> runAction(RepeatForever::create(closeTreesSeqF));
+    midTreesF -> runAction(RepeatForever::create(midTreesSeqF));
+    farTreesF -> runAction(RepeatForever::create(farTreesSeqF));
+    mountainsF-> runAction(RepeatForever::create(mountainsSeqF));
+    cloudsF -> runAction(RepeatForever::create(cloudsSeqF));
+    
+}

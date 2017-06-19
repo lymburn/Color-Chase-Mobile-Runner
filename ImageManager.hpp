@@ -14,9 +14,28 @@ USING_NS_CC;
 class ImageManager {
 public:
     ImageManager (Scene* scenePlaying);
-    void createBackground();
+    void createTitleBackground();
+    void createLevelChooserBackground();
+    void createInitialGameBackground();
+    void createFollowingBackground();
+    Sprite* getBackgroundAsset(std::string name);
 private:
-    Sprite* titleBackground;
+    Sprite* titleBackground = Sprite::create("backgrounds/landscape.png");
     Scene* currentScene;
+    
+    //Initial assets
+    Sprite* closeTreesI = Sprite::create("backgrounds/closetrees.png");
+    Sprite* midTreesI = Sprite::create("backgrounds/midtrees.png");
+    Sprite* farTreesI = Sprite::create("backgrounds/fartrees.png");
+    Sprite* mountainsI = Sprite::create("backgrounds/mountains.png");
+    Sprite* cloudsI = Sprite::create("backgrounds/clouds.png");
+    Sprite* skyI = Sprite::create("backgrounds/sky.png");
+    
+    //Following
+    Sprite* closeTreesF = Sprite::create("backgrounds/closetrees.png");
+    Sprite* midTreesF = Sprite::create("backgrounds/midtrees.png");
+    Sprite* farTreesF = Sprite::create("backgrounds/fartrees.png");
+    Sprite* mountainsF = Sprite::create("backgrounds/mountains.png");
+    Sprite* cloudsF = Sprite::create("backgrounds/clouds.png");
 };
 #endif /* ImageManager_hpp */

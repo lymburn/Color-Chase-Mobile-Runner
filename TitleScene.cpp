@@ -25,22 +25,37 @@ bool TitleScene::init()
     {
         return false;
     }
-    
+
     //Creates title text and tap to play
     TextManager TextCreator(this);
     TextCreator.createTitle();
     TextCreator.createTapToPlay();
 
-    //Create the title background
+    //Create the background
     ImageManager ImageCreator(this);
-    ImageCreator.createBackground();
+    ImageCreator.createTitleBackground();
 
     ActionPerformer PerformActions;
     PerformActions.fadeInAndOut(TextCreator.getTapToPlay());
     
-    Director::getInstance()->replaceScene(LevelChooserScene);
-
+    
+    auto listener1 = EventListenerTouchOneByOne::create();
+    listener1->setSwallowTouches(true);
+    // trigger when you push down
+    
+    
+    listener1->onTouchBegan = [](Touch* touch, Event* event){
+        auto scene = TutorialScene::createScene();
+        Director::getInstance()->replaceScene(scene);
+        return true; // if you are consuming it
+    };
+     
+    
+    // Add listener
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener1, this);
+    
     return true;
     
 }
+
 

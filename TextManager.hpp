@@ -18,7 +18,7 @@ public:
     void createTitle();
     void createTapToPlay();
     TextManager (Scene* scenePlaying);
-    Label* getTapToPlay ();
+    Label* getTapToPlay();
 private:
     Label* title;
     Label* tapToPlay;
