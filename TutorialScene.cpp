@@ -19,28 +19,61 @@ bool TutorialScene::init() {
     {
         return false;
     }
+    //Creates text
+    auto TextCreator = new TextManager(this);
     
-    //Create the background
-    ImageManager ImageCreator(this);
-    ImageCreator.createInitialGameBackground();
-    ImageCreator.createFollowingBackground();
+    //Displays the color/goal for player
+    auto ColorDisplay = new ColorDisplayer(this);
+    auto displayColor = ColorDisplay->getDisplayColor();
     
-    //Get the nodes for the background assets
-    auto closeTreesI = ImageCreator.getBackgroundAsset("closeTreesI");
-    auto midTreesI = ImageCreator.getBackgroundAsset("midTreesI");
-    auto farTreesI = ImageCreator.getBackgroundAsset("farTreesI");
-    auto mountainsI = ImageCreator.getBackgroundAsset("mountainsI");
-    auto cloudsI = ImageCreator.getBackgroundAsset("cloudsI");
+    //Create the backgrounds
+    auto ImageCreator = new ImageManager(this);
+    ImageCreator->createInitialGameBackground();
+    ImageCreator->createFollowingBackground();
     
-    auto closeTreesF = ImageCreator.getBackgroundAsset("closeTreesF");
-    auto midTreesF = ImageCreator.getBackgroundAsset("midTreesF");
-    auto farTreesF = ImageCreator.getBackgroundAsset("farTreesF");
-    auto mountainsF = ImageCreator.getBackgroundAsset("mountainsF");
-    auto cloudsF = ImageCreator.getBackgroundAsset("cloudsF");
-    
-    ActionPerformer PerformActions;
+    auto PerformActions = new ActionPerformer;
     //Infinite background scrolling
-    PerformActions.parallaxScrolling(closeTreesI, midTreesI, farTreesI, mountainsI, cloudsI, closeTreesF, midTreesF, farTreesF, mountainsF, cloudsF);
+    PerformActions->runBackgroundParallaxScrolling(ImageCreator);
+    
+    //Bird instance
+    auto BirdInst = new Bird(this);
+    BirdInst->animateBird();
+
+    //Touch listener
+    auto touchListener = EventListenerTouchOneByOne::create();
+    auto bird = BirdInst->getBird();
+    
+    bool tapped = false;
+    touchListener->onTouchBegan = [=](Touch* touch, Event* event) {
+        return true;
+    };
+    
+    touchListener->onTouchEnded = [=](Touch* touch, Event* event) mutable {
+        if (tapped == false) {
+            ColorDisplay->displayCurrentColor(displayColor);
+            float distanceToLocation = sqrtf(powf(touch->getLocation().x - bird->getPosition().x,2) + powf(touch->getLocation().y - bird->getPosition().y,2));
+            float timeToLocation = distanceToLocation/(bird->getContentSize().width*25);
+            auto move = MoveTo::create(timeToLocation,Vec2(touch->getLocation().x, touch->getLocation().y));
+            
+            auto cb = CallFunc::create([&]() {
+                if (tapped == false) {
+                    tapped = true;
+                } else {
+                    tapped = false;
+                }
+            });
+            auto seq = Sequence::create(cb, move, cb->clone(), NULL);
+            bird->runAction(seq);
+        }
+    };
+    
+    Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener,this);
+
+    delete TextCreator;
+    delete ColorDisplay;
+    delete ImageCreator;
+    delete PerformActions;
+    delete BirdInst;
     
     return true;
 

@@ -10,11 +10,20 @@
 #define LevelChooserScene_hpp
 
 #include <stdio.h>
+#include "TextManager.hpp"
+#include "TutorialScene.hpp"
+#include "PlayScene.hpp"
+#include "SettingsScene.hpp"
+
 class LevelChooserScene : public cocos2d::Scene {
     
 public:
     static cocos2d::Scene* createScene();
     virtual bool init();
+    
+    void Tutorial(Ref *pSender);
+    void Play(Ref *pSender);
+    void Settings(Ref *pSender);
     
     // implement the "static create()" method manually
     CREATE_FUNC(LevelChooserScene);

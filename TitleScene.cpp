@@ -39,20 +39,19 @@ bool TitleScene::init()
     PerformActions.fadeInAndOut(TextCreator.getTapToPlay());
     
     
-    auto listener1 = EventListenerTouchOneByOne::create();
-    listener1->setSwallowTouches(true);
+    auto titleTapListener = EventListenerTouchOneByOne::create();
+    titleTapListener->setSwallowTouches(true);
     // trigger when you push down
     
-    
-    listener1->onTouchBegan = [](Touch* touch, Event* event){
-        auto scene = TutorialScene::createScene();
+    titleTapListener->onTouchBegan = [](Touch* touch, Event* event){
+        auto scene = LevelChooserScene::createScene();
         Director::getInstance()->replaceScene(scene);
         return true; // if you are consuming it
     };
      
     
     // Add listener
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener1, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(titleTapListener, this);
     
     return true;
     

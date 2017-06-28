@@ -11,7 +11,10 @@
 
 #include <stdio.h>
 #include "cocos2d.h"
+#include "TutorialScene.hpp"
+#include <iostream>
 USING_NS_CC;
+using namespace std;
 
 class TextManager {
 public:
@@ -23,6 +26,7 @@ private:
     Label* title;
     Label* tapToPlay;
     Scene* currentScene;
+
 };
 
 #endif /* TextManager_hpp */

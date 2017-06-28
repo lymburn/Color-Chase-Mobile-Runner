@@ -11,6 +11,7 @@
 USING_NS_CC;
 #include <stdio.h>
 
+
 class ImageManager {
 public:
     ImageManager (Scene* scenePlaying);
@@ -20,8 +21,9 @@ public:
     void createFollowingBackground();
     Sprite* getBackgroundAsset(std::string name);
 private:
-    Sprite* titleBackground = Sprite::create("backgrounds/landscape.png");
     Scene* currentScene;
+    //Title background
+    Sprite* titleBackground = Sprite::create("backgrounds/landscape.png");
     
     //Initial assets
     Sprite* closeTreesI = Sprite::create("backgrounds/closetrees.png");

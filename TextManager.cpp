@@ -7,6 +7,7 @@
 //
 
 #include "TextManager.hpp"
+using namespace std;
 
 void TextManager::createTitle() {
     auto visibleSize = Director::getInstance()->getVisibleSize();
@@ -27,9 +28,13 @@ void TextManager::createTapToPlay() {
 }
 
 TextManager::TextManager(Scene* ScenePlaying) {
+    //Sets the current scene playing
     currentScene = ScenePlaying;
+
 }
 
 Label* TextManager::getTapToPlay() {
     return tapToPlay;
 }
+
+
