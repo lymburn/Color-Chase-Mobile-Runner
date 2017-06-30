@@ -16,8 +16,7 @@ using namespace std;
 
 class ColorDisplayer {
 public:
-    void displayCurrentColor(Label* displayColor);
-    void changeTextAndColor();
+    void changeTextAndColor(Label* displayColor);
     Label* getDisplayColor();
     ColorDisplayer(Scene* scenePlaying);
 private:

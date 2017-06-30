@@ -20,16 +20,23 @@ bool TutorialScene::init() {
         return false;
     }
     //Creates text
-    auto TextCreator = new TextManager(this);
+    
     
     //Displays the color/goal for player
     auto ColorDisplay = new ColorDisplayer(this);
     auto displayColor = ColorDisplay->getDisplayColor();
+    ColorDisplay->changeTextAndColor(displayColor);
     
     //Create the backgrounds
     auto ImageCreator = new ImageManager(this);
     ImageCreator->createInitialGameBackground();
     ImageCreator->createFollowingBackground();
+    ImageCreator->createBalls();
+    
+    //Creates the balls
+    auto BallCreator = new BallSpawner(this);
+    BallCreator->spawnBalls(ImageCreator);
+    BallCreator->moveBalls(ImageCreator);
     
     auto PerformActions = new ActionPerformer;
     //Infinite background scrolling
@@ -41,7 +48,9 @@ bool TutorialScene::init() {
 
     //Touch listener
     auto touchListener = EventListenerTouchOneByOne::create();
-    auto bird = BirdInst->getBird();
+    Sprite* bird = BirdInst->getBird();
+    bird->setTag(1);
+    
     
     bool tapped = false;
     touchListener->onTouchBegan = [=](Touch* touch, Event* event) {
@@ -50,7 +59,6 @@ bool TutorialScene::init() {
     
     touchListener->onTouchEnded = [=](Touch* touch, Event* event) mutable {
         if (tapped == false) {
-            ColorDisplay->displayCurrentColor(displayColor);
             float distanceToLocation = sqrtf(powf(touch->getLocation().x - bird->getPosition().x,2) + powf(touch->getLocation().y - bird->getPosition().y,2));
             float timeToLocation = distanceToLocation/(bird->getContentSize().width*25);
             auto move = MoveTo::create(timeToLocation,Vec2(touch->getLocation().x, touch->getLocation().y));
@@ -68,13 +76,18 @@ bool TutorialScene::init() {
     };
     
     Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener,this);
+    this->scheduleUpdate();
 
-    delete TextCreator;
+    
     delete ColorDisplay;
     delete ImageCreator;
     delete PerformActions;
     delete BirdInst;
+    delete BallCreator;
     
     return true;
 
+}
+
+void TutorialScene::update(float delta) {
 }

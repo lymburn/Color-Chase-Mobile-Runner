@@ -141,6 +141,41 @@ void ImageManager::createFollowingBackground() {
     currentScene->addChild(cloudsF,0);
 }
 
+void ImageManager::createBalls() {
+    balls.push_back(Sprite::create("sprites/balls/yellow.png"));
+    balls.push_back(Sprite::create("sprites/balls/orange.png"));
+    balls.push_back(Sprite::create("sprites/balls/red.png"));
+    balls.push_back(Sprite::create("sprites/balls/blue.png"));
+    balls.push_back(Sprite::create("sprites/balls/green.png"));
+    balls.push_back(Sprite::create("sprites/balls/magenta.png"));
+    balls.push_back(Sprite::create("sprites/balls/black.png"));
+    balls.push_back(Sprite::create("sprites/balls/gray.png"));
+}
+
+Sprite* ImageManager::getBalls(int location) {
+    /*
+    if (color == "yellow") {
+        return balls.at(0);
+    } else if (color == "orange") {
+        return balls.at(1);
+    } else if (color == "red") {
+        return balls.at(2);
+    } else if (color == "blue") {
+        return balls.at(3);
+    } else if (color == "green") {
+        return balls.at(4);
+    } else if (color == "magenta") {
+        return balls.at(5);
+    } else if (color == "black") {
+        return balls.at(6);
+    } else if (color == "gray") {
+        return balls.at(7);
+    } else return NULL;
+     */
+    
+    return balls.at(location);
+}
+
 
 
 

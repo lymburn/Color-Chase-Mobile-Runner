@@ -10,6 +10,7 @@
 #define ImageManager_hpp
 USING_NS_CC;
 #include <stdio.h>
+using namespace std;
 
 
 class ImageManager {
@@ -19,8 +20,11 @@ public:
     void createLevelChooserBackground();
     void createInitialGameBackground();
     void createFollowingBackground();
+    void createBalls();
+    Sprite* getBalls(int location);
     Sprite* getBackgroundAsset(std::string name);
 private:
+    vector<Sprite*> balls;
     Scene* currentScene;
     //Title background
     Sprite* titleBackground = Sprite::create("backgrounds/landscape.png");

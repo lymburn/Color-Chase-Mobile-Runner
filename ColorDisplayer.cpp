@@ -34,7 +34,7 @@ ColorDisplayer::ColorDisplayer(Scene* ScenePlaying) {
     visibleColor.push_back(Color4B::GRAY);
     
     displayColor = Label::createWithTTF(colorString.at(0), "fonts/Ubuntu-Medium.ttf", 24);
-    displayColor->setPosition(visibleSize.width/2 + origin.x, origin.y + visibleSize.height - 2*displayColor->getContentSize().height);
+    displayColor->setPosition(visibleSize.width/2 + origin.x, origin.y + visibleSize.height - displayColor->getContentSize().height);
     currentScene->addChild(displayColor,6);
 }
 
@@ -42,13 +42,11 @@ Label* ColorDisplayer::getDisplayColor() {
     return displayColor;
 }
 
-void ColorDisplayer::displayCurrentColor(Label* displayColor) {
+void ColorDisplayer::changeTextAndColor(Label* displayColor) {
+    srand (time(NULL));
     int i = rand()%8;
     int j = rand()%8;
     displayColor->setString(colorString.at(i));
     displayColor->setTextColor(visibleColor.at(j));
 }
 
-void changeTextAndColor() {
-    
-}

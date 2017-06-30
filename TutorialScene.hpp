@@ -16,6 +16,7 @@
 #include "ActionPerformer.hpp"
 #include <memory.h>
 #include "Bird.hpp"
+#include "BallSpawner.hpp"
 
 class TutorialScene : public cocos2d::Scene {
     
@@ -25,6 +26,8 @@ public:
     
     // implement the "static create()" method manually
     CREATE_FUNC(TutorialScene);
+    void update(float);
+
 };
 
 
