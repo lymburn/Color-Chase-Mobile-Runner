@@ -12,6 +12,15 @@
 ImageManager::ImageManager(Scene* ScenePlaying) {
     currentScene = ScenePlaying;
     
+    balls.push_back(Sprite::create("sprites/balls/yellow.png"));
+    balls.push_back(Sprite::create("sprites/balls/orange.png"));
+    balls.push_back(Sprite::create("sprites/balls/red.png"));
+    balls.push_back(Sprite::create("sprites/balls/blue.png"));
+    balls.push_back(Sprite::create("sprites/balls/green.png"));
+    balls.push_back(Sprite::create("sprites/balls/magenta.png"));
+    balls.push_back(Sprite::create("sprites/balls/black.png"));
+    balls.push_back(Sprite::create("sprites/balls/gray.png"));
+    
     //Initial assets
     titleBackground->setName("titleBackground");
     closeTreesI->setName("closeTreesI");
@@ -142,14 +151,7 @@ void ImageManager::createFollowingBackground() {
 }
 
 void ImageManager::createBalls() {
-    balls.push_back(Sprite::create("sprites/balls/yellow.png"));
-    balls.push_back(Sprite::create("sprites/balls/orange.png"));
-    balls.push_back(Sprite::create("sprites/balls/red.png"));
-    balls.push_back(Sprite::create("sprites/balls/blue.png"));
-    balls.push_back(Sprite::create("sprites/balls/green.png"));
-    balls.push_back(Sprite::create("sprites/balls/magenta.png"));
-    balls.push_back(Sprite::create("sprites/balls/black.png"));
-    balls.push_back(Sprite::create("sprites/balls/gray.png"));
+cout<<balls.size()<<endl;
 }
 
 Sprite* ImageManager::getBalls(int location) {
@@ -172,7 +174,7 @@ Sprite* ImageManager::getBalls(int location) {
         return balls.at(7);
     } else return NULL;
      */
-    
+    //cout<<balls.size()<<endl;
     return balls.at(location);
 }
 

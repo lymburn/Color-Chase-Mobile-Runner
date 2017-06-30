@@ -44,9 +44,11 @@ Label* ColorDisplayer::getDisplayColor() {
 
 void ColorDisplayer::changeTextAndColor(Label* displayColor) {
     srand (time(NULL));
-    int i = rand()%8;
-    int j = rand()%8;
-    displayColor->setString(colorString.at(i));
-    displayColor->setTextColor(visibleColor.at(j));
+    
+    auto changeString = CallFunc::create([=]() {displayColor->setString(colorString.at(rand()%8));});
+    auto changeColor = CallFunc::create([=]() {displayColor->setTextColor(visibleColor.at(rand()%8));});
+    
+    auto seq = Sequence::create(changeString, changeColor, DelayTime::create(5), NULL);
+    displayColor->runAction(RepeatForever::create(seq));
 }
 

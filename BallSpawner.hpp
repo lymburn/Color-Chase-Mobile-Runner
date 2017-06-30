@@ -19,7 +19,6 @@ public:
     BallSpawner(Scene* ScenePlaying);
     void spawnBalls(ImageManager* ImageCreator);
     void moveBalls(ImageManager* ImageCreator);
-    void collisionChecker(Sprite* bird, ImageManager* ImageCreator);
 private:
     Scene* currentScene;
 };

@@ -24,6 +24,7 @@ private:
     vector<string> colorString;
     vector<Color4B> visibleColor;
     Scene* currentScene;
+    string correctColor;
 };
 
 #endif /* ColorDisplayer_hpp */

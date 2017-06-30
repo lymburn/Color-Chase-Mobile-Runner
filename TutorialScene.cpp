@@ -23,37 +23,44 @@ bool TutorialScene::init() {
     
     
     //Displays the color/goal for player
-    auto ColorDisplay = new ColorDisplayer(this);
+    ColorDisplay = new ColorDisplayer(this);
     auto displayColor = ColorDisplay->getDisplayColor();
-    ColorDisplay->changeTextAndColor(displayColor);
+    //ColorDisplay->changeTextAndColor(displayColor);
     
     //Create the backgrounds
-    auto ImageCreator = new ImageManager(this);
+    ImageCreator = new ImageManager(this);
     ImageCreator->createInitialGameBackground();
     ImageCreator->createFollowingBackground();
-    ImageCreator->createBalls();
     
     //Creates the balls
-    auto BallCreator = new BallSpawner(this);
+    BallCreator = new BallSpawner(this);
     BallCreator->spawnBalls(ImageCreator);
     BallCreator->moveBalls(ImageCreator);
     
-    auto PerformActions = new ActionPerformer;
+    PerformActions = new ActionPerformer;
     //Infinite background scrolling
     PerformActions->runBackgroundParallaxScrolling(ImageCreator);
     
     //Bird instance
-    auto BirdInst = new Bird(this);
+    BirdInst = new Bird(this);
     BirdInst->animateBird();
-
+    
+    balls[0] = ImageCreator->getBalls(0);
+    balls[1] = ImageCreator->getBalls(1);
+    balls[2] = ImageCreator->getBalls(2);
+    balls[3] = ImageCreator->getBalls(3);
+    balls[4] = ImageCreator->getBalls(4);
+    balls[5] = ImageCreator->getBalls(5);
+    balls[6] = ImageCreator->getBalls(6);
+    balls[7] = ImageCreator->getBalls(7);
+    
     //Touch listener
     auto touchListener = EventListenerTouchOneByOne::create();
-    Sprite* bird = BirdInst->getBird();
-    bird->setTag(1);
-    
+    bird = BirdInst->getBird();
     
     bool tapped = false;
     touchListener->onTouchBegan = [=](Touch* touch, Event* event) {
+        auto visibleSize = Director::getInstance()->getVisibleSize();
         return true;
     };
     
@@ -90,4 +97,21 @@ bool TutorialScene::init() {
 }
 
 void TutorialScene::update(float delta) {
+    if (balls[0]->getBoundingBox().intersectsRect(bird->getBoundingBox())) {
+        balls[0]->setVisible(false);
+    } else if (balls[1]->getBoundingBox().intersectsRect(bird->getBoundingBox())) {
+        balls[1]->setVisible(false);
+    } else if (balls[2]->getBoundingBox().intersectsRect(bird->getBoundingBox())) {
+        balls[2]->setVisible(false);
+    } else if (balls[3]->getBoundingBox().intersectsRect(bird->getBoundingBox())) {
+        balls[3]->setVisible(false);
+    } else if (balls[4]->getBoundingBox().intersectsRect(bird->getBoundingBox())) {
+        balls[4]->setVisible(false);
+    } else if (balls[5]->getBoundingBox().intersectsRect(bird->getBoundingBox())) {
+        balls[5]->setVisible(false);
+    } else if (balls[6]->getBoundingBox().intersectsRect(bird->getBoundingBox())) {
+        balls[6]->setVisible(false);
+    } else if (balls[7]->getBoundingBox().intersectsRect(bird->getBoundingBox())) {
+        balls[7]->setVisible(false);
+    }
 }

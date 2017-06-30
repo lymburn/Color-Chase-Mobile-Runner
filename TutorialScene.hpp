@@ -27,6 +27,16 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(TutorialScene);
     void update(float);
+    
+private:
+    ImageManager* ImageCreator;
+    BallSpawner* BallCreator;
+    ActionPerformer* PerformActions;
+    Bird* BirdInst;
+    Sprite* bird;
+    ColorDisplayer* ColorDisplay;
+    Sprite* balls[8];
+    bool hit = false;
 
 };
 
