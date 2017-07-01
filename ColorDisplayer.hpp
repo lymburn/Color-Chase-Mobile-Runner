@@ -18,13 +18,17 @@ class ColorDisplayer {
 public:
     void changeTextAndColor(Label* displayColor);
     Label* getDisplayColor();
+    Color4B getCorrectColor();
     ColorDisplayer(Scene* scenePlaying);
+    void setCorrectColor(int i);
+    vector<string> getColorString();
+    vector<Color4B> getVisibleColors();
 private:
     Label* displayColor;
     vector<string> colorString;
     vector<Color4B> visibleColor;
     Scene* currentScene;
-    string correctColor;
+    Color4B correctColor;
 };
 
 #endif /* ColorDisplayer_hpp */

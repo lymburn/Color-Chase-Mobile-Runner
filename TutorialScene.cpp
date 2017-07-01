@@ -23,26 +23,28 @@ bool TutorialScene::init() {
     
     
     //Displays the color/goal for player
-    ColorDisplay = new ColorDisplayer(this);
-    auto displayColor = ColorDisplay->getDisplayColor();
-    //ColorDisplay->changeTextAndColor(displayColor);
+    auto ColorDisplay = new ColorDisplayer(this);
+    displayColor = ColorDisplay->getDisplayColor();
+    correctColor = ColorDisplay->getCorrectColor();
+    colorString = ColorDisplay->getColorString();
+    visibleColor = ColorDisplay->getVisibleColors();
     
     //Create the backgrounds
-    ImageCreator = new ImageManager(this);
+    auto ImageCreator = new ImageManager(this);
     ImageCreator->createInitialGameBackground();
     ImageCreator->createFollowingBackground();
     
     //Creates the balls
-    BallCreator = new BallSpawner(this);
+    auto BallCreator = new BallSpawner(this);
     BallCreator->spawnBalls(ImageCreator);
     BallCreator->moveBalls(ImageCreator);
     
-    PerformActions = new ActionPerformer;
+    auto PerformActions = new ActionPerformer;
     //Infinite background scrolling
     PerformActions->runBackgroundParallaxScrolling(ImageCreator);
     
     //Bird instance
-    BirdInst = new Bird(this);
+    auto BirdInst = new Bird(this);
     BirdInst->animateBird();
     
     balls[0] = ImageCreator->getBalls(0);
@@ -60,7 +62,6 @@ bool TutorialScene::init() {
     
     bool tapped = false;
     touchListener->onTouchBegan = [=](Touch* touch, Event* event) {
-        auto visibleSize = Director::getInstance()->getVisibleSize();
         return true;
     };
     
@@ -97,21 +98,115 @@ bool TutorialScene::init() {
 }
 
 void TutorialScene::update(float delta) {
-    if (balls[0]->getBoundingBox().intersectsRect(bird->getBoundingBox())) {
+    //Collision detection
+    auto tutScene = LevelChooserScene::createScene();
+    int i = rand()%8;
+    int j = rand()%8;
+    
+    if (i==j) {
+        if (j>=0 && j<7) {
+            j++;
+        } else if (j == 7) {
+            j--;
+        }
+    }
+    
+    /*
+    if (correctColor == Color4B::YELLOW) {
+        cout << "Y";
+    } else if (correctColor == Color4B::ORANGE) {
+        cout<<"O";
+    } else if (correctColor == Color4B::RED) {
+        cout<<"R";
+    } else if (correctColor == Color4B::BLUE) {
+        cout<<"Blue";
+    } else if (correctColor == Color4B::GREEN) {
+        cout<<"Green";
+    } else if (correctColor == Color4B::MAGENTA) {
+        cout<<"M";
+    } else if (correctColor == Color4B::BLACK) {
+        cout<< "B";
+    } else if (correctColor == Color4B::GRAY) {
+        cout<<"Gray";
+    }
+     */
+    
+    if (balls[0]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor == Color4B::YELLOW && balls[0]->isVisible()) {
         balls[0]->setVisible(false);
-    } else if (balls[1]->getBoundingBox().intersectsRect(bird->getBoundingBox())) {
+        srand (time(NULL));
+        displayColor->setString(colorString.at(i));
+        displayColor->setTextColor(visibleColor.at(j));
+        correctColor = visibleColor.at(j);
+    } else if (balls[0]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor != Color4B::YELLOW && balls[0]->isVisible()) {
+        Director::getInstance()->replaceScene(tutScene);
+    }
+    
+    if (balls[1]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor == Color4B::ORANGE && balls[1]->isVisible()) {
         balls[1]->setVisible(false);
-    } else if (balls[2]->getBoundingBox().intersectsRect(bird->getBoundingBox())) {
+        srand (time(NULL));
+        displayColor->setString(colorString.at(i));
+        displayColor->setTextColor(visibleColor.at(j));
+        correctColor = visibleColor.at(j);
+    } else if (balls[1]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor != Color4B::ORANGE && balls[1]->isVisible()){
+        Director::getInstance()->replaceScene(tutScene);
+    }
+        
+    if (balls[2]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor == Color4B::RED && balls[2]->isVisible()) {
         balls[2]->setVisible(false);
-    } else if (balls[3]->getBoundingBox().intersectsRect(bird->getBoundingBox())) {
+        srand (time(NULL));
+        displayColor->setString(colorString.at(i));
+        displayColor->setTextColor(visibleColor.at(j));
+        correctColor = visibleColor.at(j);
+    } else if (balls[2]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor != Color4B::RED && balls[2]->isVisible()){
+        Director::getInstance()->replaceScene(tutScene);
+    }
+        
+    if (balls[3]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor == Color4B::BLUE && balls[3]->isVisible()) {
         balls[3]->setVisible(false);
-    } else if (balls[4]->getBoundingBox().intersectsRect(bird->getBoundingBox())) {
+        srand (time(NULL));
+        displayColor->setString(colorString.at(i));
+        displayColor->setTextColor(visibleColor.at(j));
+        correctColor = visibleColor.at(j);
+    } else if (balls[3]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor != Color4B::BLUE && balls[3]->isVisible()){
+        Director::getInstance()->replaceScene(tutScene);
+    }
+        
+    if (balls[4]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor == Color4B::GREEN && balls[4]->isVisible()) {
         balls[4]->setVisible(false);
-    } else if (balls[5]->getBoundingBox().intersectsRect(bird->getBoundingBox())) {
+        srand (time(NULL));
+        displayColor->setString(colorString.at(i));
+        displayColor->setTextColor(visibleColor.at(j));
+        correctColor = visibleColor.at(j);
+    } else if (balls[4]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor != Color4B::GREEN && balls[4]->isVisible()){
+        Director::getInstance()->replaceScene(tutScene);
+    }
+    if (balls[5]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor == Color4B::MAGENTA && balls[5]->isVisible()) {
         balls[5]->setVisible(false);
-    } else if (balls[6]->getBoundingBox().intersectsRect(bird->getBoundingBox())) {
+        srand (time(NULL));
+        displayColor->setString(colorString.at(i));
+        displayColor->setTextColor(visibleColor.at(j));
+        correctColor = visibleColor.at(j);
+    } else if (balls[5]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor != Color4B::MAGENTA && balls[5]->isVisible()){
+        Director::getInstance()->replaceScene(tutScene);
+    }
+        
+    if (balls[6]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor == Color4B::BLACK && balls[6]->isVisible()) {
         balls[6]->setVisible(false);
-    } else if (balls[7]->getBoundingBox().intersectsRect(bird->getBoundingBox())) {
+        srand (time(NULL));
+        displayColor->setString(colorString.at(i));
+        displayColor->setTextColor(visibleColor.at(j));
+        correctColor = visibleColor.at(j);
+    } else if (balls[6]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor != Color4B::BLACK && balls[6]->isVisible()){
+        Director::getInstance()->replaceScene(tutScene);
+    }
+        
+    if (balls[7]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor == Color4B::GRAY && balls[7]->isVisible()) {
         balls[7]->setVisible(false);
+        srand (time(NULL));
+        displayColor->setString(colorString.at(i));
+        displayColor->setTextColor(visibleColor.at(j));
+        correctColor = visibleColor.at(j);
+    } else if (balls[7]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor != Color4B::GRAY && balls[7]->isVisible()){
+        Director::getInstance()->replaceScene(tutScene);
     }
 }

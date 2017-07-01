@@ -17,6 +17,7 @@
 #include <memory.h>
 #include "Bird.hpp"
 #include "BallSpawner.hpp"
+#include "TitleScene.hpp"
 
 class TutorialScene : public cocos2d::Scene {
     
@@ -29,15 +30,13 @@ public:
     void update(float);
     
 private:
-    ImageManager* ImageCreator;
-    BallSpawner* BallCreator;
-    ActionPerformer* PerformActions;
-    Bird* BirdInst;
+    Label* displayColor;
     Sprite* bird;
-    ColorDisplayer* ColorDisplay;
     Sprite* balls[8];
     bool hit = false;
-
+    Color4B correctColor;
+    vector<string> colorString;
+    vector<Color4B> visibleColor;
 };
 
 
