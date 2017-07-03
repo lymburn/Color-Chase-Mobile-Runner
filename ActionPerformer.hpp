@@ -17,6 +17,8 @@ class ActionPerformer {
 public:
     void fadeInAndOut(Node* target);
     void runBackgroundParallaxScrolling(ImageManager* ImageCreator);
+    void fadeIn(Node* target);
+    void fadeOut (Node* target);
 private:
     void parallaxScrolling(Node* closeTreesI, Node* midTreesI, Node* farTreesI, Node* mountainsI, Node* cloudsI, Node* closeTreesF, Node* midTreesF, Node* farTreesF, Node* mountainsF,Node* cloudsF);
     

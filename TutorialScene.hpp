@@ -22,21 +22,13 @@
 class TutorialScene : public cocos2d::Scene {
     
 public:
+    void Back(Ref *pSender);
     static cocos2d::Scene* createScene();
     virtual bool init();
     
     // implement the "static create()" method manually
     CREATE_FUNC(TutorialScene);
-    void update(float);
-    
-private:
-    Label* displayColor;
-    Sprite* bird;
-    Sprite* balls[8];
-    bool hit = false;
-    Color4B correctColor;
-    vector<string> colorString;
-    vector<Color4B> visibleColor;
+
 };
 
 

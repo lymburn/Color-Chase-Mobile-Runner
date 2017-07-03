@@ -26,18 +26,34 @@ bool LevelChooserScene::init() {
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
     
+    auto ImageCreator = new ImageManager(this);
+    auto TextCreator = new TextManager(this);
+    auto PerformActions = new ActionPerformer;
+    
+    //Creates background
+    ImageCreator->createStaticBackground();
+    //Create title
+    TextCreator->createTitle();
+    
     //Creates the menu items
-    auto menuItem1 = MenuItemFont::create("Tutorial", CC_CALLBACK_1(LevelChooserScene::Tutorial, this));
-    auto menuItem2 = MenuItemFont::create("Play", CC_CALLBACK_1(LevelChooserScene::Play, this));
-    auto menuItem3 = MenuItemFont::create("Settings", CC_CALLBACK_1(LevelChooserScene::Settings,this));
+    auto menuItem1 = MenuItemFont::create("PLAY", CC_CALLBACK_1(LevelChooserScene::Play, this));
+    auto menuItem2 = MenuItemFont::create("TUTORIAL", CC_CALLBACK_1(LevelChooserScene::Tutorial, this));
     
-    menuItem1->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height*0.75 + origin.y));
-    menuItem2->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height*0.5 + origin.y));
-    menuItem3->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height*0.25 + origin.y));
+    menuItem1->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height*0.25 + origin.y));
+    menuItem2->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height*0.1 + origin.y));
     
-    auto *menu = Menu::create(menuItem1, menuItem2, menuItem3, NULL);
+    menuItem1->setScale(0.6,0.6);
+    menuItem2->setScale(0.6,0.6);
+    
+    auto *menu = Menu::create(menuItem1, menuItem2, NULL);
     menu->setPosition(Vec2(0, 0));
     this->addChild(menu);
+    PerformActions->fadeIn(menuItem1);
+    PerformActions->fadeIn(menuItem2);
+    
+    delete ImageCreator;
+    delete TextCreator;
+    delete PerformActions;
     return true;
 }
 
@@ -51,7 +67,3 @@ void LevelChooserScene::Play(Ref *pSender) {
     Director::getInstance()->replaceScene(playScene);
 }
 
-void LevelChooserScene::Settings(Ref *pSender) {
-    auto settingsScene = SettingsScene::createScene();
-    Director::getInstance()->replaceScene(settingsScene);
-}

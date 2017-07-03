@@ -16,6 +16,17 @@ void ActionPerformer::fadeInAndOut(Node* target) {
     target->runAction(RepeatForever::create(seq));
 }
 
+void ActionPerformer::fadeIn(Node* target) {
+    target->setOpacity(0);
+    auto move = FadeIn::create(0.8);
+    target->runAction(move);
+}
+
+void ActionPerformer::fadeOut(Node* target) {
+    auto move = FadeOut::create(2);
+    target->runAction(move);
+}
+
 void ActionPerformer::parallaxScrolling(Node* closeTreesI, Node* midTreesI, Node* farTreesI, Node* mountainsI, Node* cloudsI, Node* closeTreesF, Node* midTreesF, Node* farTreesF, Node* mountainsF,Node* cloudsF) {
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
@@ -42,7 +53,6 @@ void ActionPerformer::parallaxScrolling(Node* closeTreesI, Node* midTreesI, Node
     auto mountainsMoveI = MoveBy::create(initialMountainsTime, Vec2(-visibleSize.width + origin.x,0));
     auto cloudsMoveI = MoveBy::create(initialCloudsTime, Vec2(-visibleSize.width + origin.x,0));
     
-    
     auto closeTreesCbI = CallFunc::create([=]() {closeTreesI->setPosition(Vec2(visibleSize.width + origin.x, origin.y));});
     auto midTreesCbI = CallFunc::create([=]() {midTreesI->setPosition(Vec2(visibleSize.width + origin.x, origin.y));});
     auto farTreesCbI = CallFunc::create([=]() {farTreesI->setPosition(Vec2(visibleSize.width + origin.x, origin.y));});
@@ -54,7 +64,6 @@ void ActionPerformer::parallaxScrolling(Node* closeTreesI, Node* midTreesI, Node
     auto farTreesSeqI = Sequence::create(farTreesMoveI,farTreesCbI,farTreesMoveI->clone(),NULL);
     auto mountainsSeqI = Sequence::create(mountainsMoveI,mountainsCbI,mountainsMoveI->clone(),NULL);
     auto cloudsSeqI = Sequence::create(cloudsMoveI,cloudsCbI,cloudsMoveI->clone(),NULL);
-    
     
     //Moves,sequence, and callback for the following panel
     auto closeTreesMoveF = MoveTo::create(closeTreesTimeF, Vec2(-visibleSize.width + origin.x, origin.y));
@@ -90,7 +99,6 @@ void ActionPerformer::parallaxScrolling(Node* closeTreesI, Node* midTreesI, Node
 }
 
 void ActionPerformer::runBackgroundParallaxScrolling(ImageManager* ImageCreator) {
-
     //Get the nodes for the background assets
     auto closeTreesI = ImageCreator->getBackgroundAsset("closeTreesI");
     auto midTreesI = ImageCreator->getBackgroundAsset("midTreesI");

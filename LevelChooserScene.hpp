@@ -13,7 +13,6 @@
 #include "TextManager.hpp"
 #include "TutorialScene.hpp"
 #include "PlayScene.hpp"
-#include "SettingsScene.hpp"
 
 class LevelChooserScene : public cocos2d::Scene {
     
@@ -23,7 +22,6 @@ public:
     
     void Tutorial(Ref *pSender);
     void Play(Ref *pSender);
-    void Settings(Ref *pSender);
     
     // implement the "static create()" method manually
     CREATE_FUNC(LevelChooserScene);

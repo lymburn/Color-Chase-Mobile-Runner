@@ -12,9 +12,7 @@ Bird::Bird(Scene* scenePlaying) {
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
     bird->setPosition(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y);
-    bird->setAnchorPoint(Vec2(0,0));
     currentScene->addChild(bird,6);
-    bird->setScale(1.5, 1.5);
 }
 
 Sprite* Bird::getBird() {

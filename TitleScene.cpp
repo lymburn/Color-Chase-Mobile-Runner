@@ -33,19 +33,18 @@ bool TitleScene::init()
 
     //Create the background
     ImageManager ImageCreator(this);
-    ImageCreator.createTitleBackground();
+    ImageCreator.createStaticBackground();
 
     ActionPerformer PerformActions;
     PerformActions.fadeInAndOut(TextCreator.getTapToPlay());
-    
     
     auto titleTapListener = EventListenerTouchOneByOne::create();
     titleTapListener->setSwallowTouches(true);
     // trigger when you push down
     
     titleTapListener->onTouchBegan = [](Touch* touch, Event* event){
-        auto scene = LevelChooserScene::createScene();
-        Director::getInstance()->replaceScene(scene);
+        auto levelScene = LevelChooserScene::createScene();
+        Director::getInstance()->replaceScene(levelScene);
         return true; // if you are consuming it
     };
      

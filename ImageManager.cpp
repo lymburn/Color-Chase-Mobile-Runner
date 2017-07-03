@@ -81,17 +81,13 @@ Sprite* ImageManager::getBackgroundAsset(std::string name) {
 }
 
 
-void ImageManager::createTitleBackground() {
+void ImageManager::createStaticBackground() {
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
     
     titleBackground->setScale(visibleSize.width/titleBackground->getContentSize().width, visibleSize.height/titleBackground->getContentSize().height);
     titleBackground->setPosition(Vec2(origin.x,origin.y));
     currentScene->addChild(titleBackground,0);
-}
-
-void ImageManager::createLevelChooserBackground() {
-    
 }
 
 //Background for the first panel
@@ -150,31 +146,8 @@ void ImageManager::createFollowingBackground() {
     currentScene->addChild(cloudsF,0);
 }
 
-void ImageManager::createBalls() {
-cout<<balls.size()<<endl;
-}
 
 Sprite* ImageManager::getBalls(int location) {
-    /*
-    if (color == "yellow") {
-        return balls.at(0);
-    } else if (color == "orange") {
-        return balls.at(1);
-    } else if (color == "red") {
-        return balls.at(2);
-    } else if (color == "blue") {
-        return balls.at(3);
-    } else if (color == "green") {
-        return balls.at(4);
-    } else if (color == "magenta") {
-        return balls.at(5);
-    } else if (color == "black") {
-        return balls.at(6);
-    } else if (color == "gray") {
-        return balls.at(7);
-    } else return NULL;
-     */
-    //cout<<balls.size()<<endl;
     return balls.at(location);
 }
 

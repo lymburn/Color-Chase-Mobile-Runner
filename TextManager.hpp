@@ -20,11 +20,13 @@ class TextManager {
 public:
     void createTitle();
     void createTapToPlay();
+    void printHighScore(int highScore);
     TextManager (Scene* scenePlaying);
     Label* getTapToPlay();
 private:
     Label* title;
     Label* tapToPlay;
+    Label* highScoreLabel;
     Scene* currentScene;
 
 };

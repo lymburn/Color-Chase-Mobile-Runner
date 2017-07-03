@@ -19,194 +19,57 @@ bool TutorialScene::init() {
     {
         return false;
     }
-    //Creates text
-    
-    
-    //Displays the color/goal for player
-    auto ColorDisplay = new ColorDisplayer(this);
-    displayColor = ColorDisplay->getDisplayColor();
-    correctColor = ColorDisplay->getCorrectColor();
-    colorString = ColorDisplay->getColorString();
-    visibleColor = ColorDisplay->getVisibleColors();
-    
-    //Create the backgrounds
+
     auto ImageCreator = new ImageManager(this);
-    ImageCreator->createInitialGameBackground();
-    ImageCreator->createFollowingBackground();
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    ImageCreator->createStaticBackground();
     
-    //Creates the balls
-    auto BallCreator = new BallSpawner(this);
-    BallCreator->spawnBalls(ImageCreator);
-    BallCreator->moveBalls(ImageCreator);
-    
-    auto PerformActions = new ActionPerformer;
-    //Infinite background scrolling
-    PerformActions->runBackgroundParallaxScrolling(ImageCreator);
-    
-    //Bird instance
-    auto BirdInst = new Bird(this);
-    BirdInst->animateBird();
-    
-    balls[0] = ImageCreator->getBalls(0);
-    balls[1] = ImageCreator->getBalls(1);
-    balls[2] = ImageCreator->getBalls(2);
-    balls[3] = ImageCreator->getBalls(3);
-    balls[4] = ImageCreator->getBalls(4);
-    balls[5] = ImageCreator->getBalls(5);
-    balls[6] = ImageCreator->getBalls(6);
-    balls[7] = ImageCreator->getBalls(7);
-    
-    //Touch listener
-    auto touchListener = EventListenerTouchOneByOne::create();
-    bird = BirdInst->getBird();
-    
-    bool tapped = false;
-    touchListener->onTouchBegan = [=](Touch* touch, Event* event) {
-        return true;
-    };
-    
-    touchListener->onTouchEnded = [=](Touch* touch, Event* event) mutable {
-        if (tapped == false) {
-            float distanceToLocation = sqrtf(powf(touch->getLocation().x - bird->getPosition().x,2) + powf(touch->getLocation().y - bird->getPosition().y,2));
-            float timeToLocation = distanceToLocation/(bird->getContentSize().width*25);
-            auto move = MoveTo::create(timeToLocation,Vec2(touch->getLocation().x, touch->getLocation().y));
-            
-            auto cb = CallFunc::create([&]() {
-                if (tapped == false) {
-                    tapped = true;
-                } else {
-                    tapped = false;
-                }
-            });
-            auto seq = Sequence::create(cb, move, cb->clone(), NULL);
-            bird->runAction(seq);
-        }
-    };
-    
-    Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener,this);
-    this->scheduleUpdate();
+    auto bird1 = Sprite::create("sprites/Flying1.png");
+    auto bird2 = Sprite::create("sprites/Flying1.png");
+    auto color = Label::createWithTTF("RED", "fonts/Ubuntu-Medium.ttf", 24);
+    auto redBall = Sprite::create("sprites/balls/red.png");
+    auto blueBall = Sprite::create("sprites/balls/blue.png");
+    auto instruction = Label::createWithTTF("Catch the ball with the color of the text and avoid the other colors", "fonts/Marker Felt.ttf", 16);
+    auto checkMark = Sprite::create("sprites/checkmark.png");
+    auto xMark = Sprite::create("sprites/cross.png");
+    auto goBack = MenuItemFont::create("Back", CC_CALLBACK_1(TutorialScene::Back, this));
 
     
-    delete ColorDisplay;
+    color->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height-color->getContentSize().height + origin.y));
+    color->setTextColor(Color4B::BLUE);
+    bird1->setPosition(Vec2(visibleSize.width*0.3 + origin.x,visibleSize.height/2 + origin.y));
+    bird1->setScale(1.5,1.5);
+    bird2->setPosition(Vec2(visibleSize.width*0.6 + origin.x,visibleSize.height/2 + origin.y));
+    bird2->setScale(1.5,1.5);
+    redBall->setPosition(Vec2(visibleSize.width*0.4 + origin.x, visibleSize.height/2 + origin.y));
+    blueBall->setPosition(Vec2(visibleSize.width*0.7 + origin.x, visibleSize.height/2 + origin.y));
+    instruction->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height*0.35));
+    checkMark->setPosition(Vec2(visibleSize.width*0.65, visibleSize.height*0.7));
+    xMark->setPosition(Vec2(visibleSize.width*0.35, visibleSize.height*0.7));
+    
+    goBack->setPosition(Vec2(goBack->getContentSize().width/2 + origin.x, goBack->getContentSize().height/2 + origin.y));
+    goBack->setScale(0.6,0.6);
+    auto *backButton = Menu::create(goBack, NULL);
+    backButton->setPosition(Vec2(0, 0));
+    
+    
+    this->addChild(backButton,1);
+    this->addChild(bird1,1);
+    this->addChild(bird2,1);
+    this->addChild(color,1);
+    this->addChild(redBall,1);
+    this->addChild(blueBall,1);
+    this->addChild(instruction,1);
+    this->addChild(checkMark,1);
+    this->addChild(xMark,1);
+    
     delete ImageCreator;
-    delete PerformActions;
-    delete BirdInst;
-    delete BallCreator;
-    
     return true;
-
 }
 
-void TutorialScene::update(float delta) {
-    //Collision detection
-    auto tutScene = LevelChooserScene::createScene();
-    int i = rand()%8;
-    int j = rand()%8;
-    
-    if (i==j) {
-        if (j>=0 && j<7) {
-            j++;
-        } else if (j == 7) {
-            j--;
-        }
-    }
-    
-    /*
-    if (correctColor == Color4B::YELLOW) {
-        cout << "Y";
-    } else if (correctColor == Color4B::ORANGE) {
-        cout<<"O";
-    } else if (correctColor == Color4B::RED) {
-        cout<<"R";
-    } else if (correctColor == Color4B::BLUE) {
-        cout<<"Blue";
-    } else if (correctColor == Color4B::GREEN) {
-        cout<<"Green";
-    } else if (correctColor == Color4B::MAGENTA) {
-        cout<<"M";
-    } else if (correctColor == Color4B::BLACK) {
-        cout<< "B";
-    } else if (correctColor == Color4B::GRAY) {
-        cout<<"Gray";
-    }
-     */
-    
-    if (balls[0]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor == Color4B::YELLOW && balls[0]->isVisible()) {
-        balls[0]->setVisible(false);
-        srand (time(NULL));
-        displayColor->setString(colorString.at(i));
-        displayColor->setTextColor(visibleColor.at(j));
-        correctColor = visibleColor.at(j);
-    } else if (balls[0]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor != Color4B::YELLOW && balls[0]->isVisible()) {
-        Director::getInstance()->replaceScene(tutScene);
-    }
-    
-    if (balls[1]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor == Color4B::ORANGE && balls[1]->isVisible()) {
-        balls[1]->setVisible(false);
-        srand (time(NULL));
-        displayColor->setString(colorString.at(i));
-        displayColor->setTextColor(visibleColor.at(j));
-        correctColor = visibleColor.at(j);
-    } else if (balls[1]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor != Color4B::ORANGE && balls[1]->isVisible()){
-        Director::getInstance()->replaceScene(tutScene);
-    }
-        
-    if (balls[2]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor == Color4B::RED && balls[2]->isVisible()) {
-        balls[2]->setVisible(false);
-        srand (time(NULL));
-        displayColor->setString(colorString.at(i));
-        displayColor->setTextColor(visibleColor.at(j));
-        correctColor = visibleColor.at(j);
-    } else if (balls[2]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor != Color4B::RED && balls[2]->isVisible()){
-        Director::getInstance()->replaceScene(tutScene);
-    }
-        
-    if (balls[3]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor == Color4B::BLUE && balls[3]->isVisible()) {
-        balls[3]->setVisible(false);
-        srand (time(NULL));
-        displayColor->setString(colorString.at(i));
-        displayColor->setTextColor(visibleColor.at(j));
-        correctColor = visibleColor.at(j);
-    } else if (balls[3]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor != Color4B::BLUE && balls[3]->isVisible()){
-        Director::getInstance()->replaceScene(tutScene);
-    }
-        
-    if (balls[4]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor == Color4B::GREEN && balls[4]->isVisible()) {
-        balls[4]->setVisible(false);
-        srand (time(NULL));
-        displayColor->setString(colorString.at(i));
-        displayColor->setTextColor(visibleColor.at(j));
-        correctColor = visibleColor.at(j);
-    } else if (balls[4]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor != Color4B::GREEN && balls[4]->isVisible()){
-        Director::getInstance()->replaceScene(tutScene);
-    }
-    if (balls[5]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor == Color4B::MAGENTA && balls[5]->isVisible()) {
-        balls[5]->setVisible(false);
-        srand (time(NULL));
-        displayColor->setString(colorString.at(i));
-        displayColor->setTextColor(visibleColor.at(j));
-        correctColor = visibleColor.at(j);
-    } else if (balls[5]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor != Color4B::MAGENTA && balls[5]->isVisible()){
-        Director::getInstance()->replaceScene(tutScene);
-    }
-        
-    if (balls[6]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor == Color4B::BLACK && balls[6]->isVisible()) {
-        balls[6]->setVisible(false);
-        srand (time(NULL));
-        displayColor->setString(colorString.at(i));
-        displayColor->setTextColor(visibleColor.at(j));
-        correctColor = visibleColor.at(j);
-    } else if (balls[6]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor != Color4B::BLACK && balls[6]->isVisible()){
-        Director::getInstance()->replaceScene(tutScene);
-    }
-        
-    if (balls[7]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor == Color4B::GRAY && balls[7]->isVisible()) {
-        balls[7]->setVisible(false);
-        srand (time(NULL));
-        displayColor->setString(colorString.at(i));
-        displayColor->setTextColor(visibleColor.at(j));
-        correctColor = visibleColor.at(j);
-    } else if (balls[7]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor != Color4B::GRAY && balls[7]->isVisible()){
-        Director::getInstance()->replaceScene(tutScene);
-    }
+void TutorialScene::Back(Ref *pSender) {
+    auto backScene = LevelChooserScene::createScene();
+    Director::getInstance()->replaceScene(backScene);
 }
+

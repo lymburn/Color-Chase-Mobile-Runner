@@ -15,14 +15,14 @@ ColorDisplayer::ColorDisplayer(Scene* ScenePlaying) {
     //Sets the current scene playing
     currentScene = ScenePlaying;
     //Add the text for the colors
-    colorString.push_back("Yellow");
-    colorString.push_back("Orange");
-    colorString.push_back("Red");
-    colorString.push_back("Blue");
-    colorString.push_back("Green");
-    colorString.push_back("Purple");
-    colorString.push_back("Black");
-    colorString.push_back("Gray");
+    colorString.push_back("YELLOW");
+    colorString.push_back("ORANGE");
+    colorString.push_back("RED");
+    colorString.push_back("BLUE");
+    colorString.push_back("GREEN");
+    colorString.push_back("PURPLE");
+    colorString.push_back("BLACK");
+    colorString.push_back("GRAY");
     //Add the color of the text of colorString
     visibleColor.push_back(Color4B::YELLOW);
     visibleColor.push_back(Color4B::ORANGE);

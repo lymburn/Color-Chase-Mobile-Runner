@@ -16,11 +16,9 @@ using namespace std;
 class ImageManager {
 public:
     ImageManager (Scene* scenePlaying);
-    void createTitleBackground();
-    void createLevelChooserBackground();
+    void createStaticBackground();
     void createInitialGameBackground();
     void createFollowingBackground();
-    void createBalls();
     Sprite* getBalls(int location);
     Sprite* getBackgroundAsset(std::string name);
 private:
