@@ -10,7 +10,6 @@
 #define BallSpawner_hpp
 USING_NS_CC;
 #include <stdio.h>
-#include <iostream>
 #include "ImageManager.hpp"
 using namespace std;
 

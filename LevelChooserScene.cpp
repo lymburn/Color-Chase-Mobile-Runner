@@ -7,8 +7,11 @@
 //
 
 #include "LevelChooserScene.hpp"
+#include "TextManager.hpp"
+#include "PlayScene.hpp"
+#include "ActionPerformer.hpp"
+#include "TutorialScene.hpp"
 
-#include <iostream>
 USING_NS_CC;
 
 Scene* LevelChooserScene::createScene()

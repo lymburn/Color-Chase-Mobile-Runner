@@ -11,14 +11,13 @@
 USING_NS_CC;
 #include <stdio.h>
 using namespace std;
-
-
 class ImageManager {
 public:
     ImageManager (Scene* scenePlaying);
     void createStaticBackground();
     void createInitialGameBackground();
     void createFollowingBackground();
+    void createDeathBackground();
     Sprite* getBalls(int location);
     Sprite* getBackgroundAsset(std::string name);
 private:
@@ -26,6 +25,8 @@ private:
     Scene* currentScene;
     //Title background
     Sprite* titleBackground = Sprite::create("backgrounds/landscape.png");
+    //Death background
+    Sprite* deathBackground = Sprite::create("backgrounds/landscape.png");
     
     //Initial assets
     Sprite* closeTreesI = Sprite::create("backgrounds/closetrees.png");

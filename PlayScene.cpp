@@ -7,6 +7,13 @@
 //
 
 #include "PlayScene.hpp"
+#include "DeathScene.hpp"
+#include "TextManager.hpp"
+#include "ColorDisplayer.hpp"
+#include "ImageManager.hpp"
+#include "ActionPerformer.hpp"
+#include "Bird.hpp"
+#include "BallSpawner.hpp"
 USING_NS_CC;
 
 Scene* PlayScene::createScene()
@@ -36,6 +43,10 @@ bool PlayScene::init() {
     this->addChild(scoreNumber,6);
     this->addChild(highScoreLabel,6);
     this->addChild(highScoreNumber,6);
+    
+    //Reset score
+    def->setIntegerForKey("score", 0);
+    
     //Displays the color/goal for player
     auto ColorDisplay = new ColorDisplayer(this);
     displayColor = ColorDisplay->getDisplayColor();
@@ -61,6 +72,7 @@ bool PlayScene::init() {
     auto BirdInst = new Bird(this);
     BirdInst->animateBird();
     
+    //Populate the balls array
     balls[0] = ImageCreator->getBalls(0);
     balls[1] = ImageCreator->getBalls(1);
     balls[2] = ImageCreator->getBalls(2);
@@ -69,6 +81,18 @@ bool PlayScene::init() {
     balls[5] = ImageCreator->getBalls(5);
     balls[6] = ImageCreator->getBalls(6);
     balls[7] = ImageCreator->getBalls(7);
+    
+    //Populate the background assets
+    backgroundAssetsI[0] = ImageCreator->getBackgroundAsset("closeTreesI");
+    backgroundAssetsI[1] = ImageCreator->getBackgroundAsset("midTreesI");
+    backgroundAssetsI[2] = ImageCreator->getBackgroundAsset("farTreesI");
+    backgroundAssetsI[3] = ImageCreator->getBackgroundAsset("mountainsI");
+    backgroundAssetsI[4] = ImageCreator->getBackgroundAsset("cloudsI");
+    backgroundAssetsF[0] = ImageCreator->getBackgroundAsset("closeTreesF");
+    backgroundAssetsF[1] = ImageCreator->getBackgroundAsset("midTreesF");
+    backgroundAssetsF[2] = ImageCreator->getBackgroundAsset("farTreesF");
+    backgroundAssetsF[3] = ImageCreator->getBackgroundAsset("mountainsF");
+    backgroundAssetsF[4] = ImageCreator->getBackgroundAsset("cloudsF");
     
     //Touch listener
     auto touchListener = EventListenerTouchOneByOne::create();
@@ -80,7 +104,7 @@ bool PlayScene::init() {
     };
     
     touchListener->onTouchEnded = [=](Touch* touch, Event* event) mutable {
-        if (tapped == false) {
+        if (tapped == false && !hit) {
             
             float xPosition, yPosition;
             float distanceToLocation = sqrtf(powf(touch->getLocation().x - bird->getPosition().x,2) + powf(touch->getLocation().y - bird->getPosition().y,2));
@@ -123,6 +147,7 @@ bool PlayScene::init() {
             });
             
             auto seq = Sequence::create(cb, move, cb->clone(), NULL);
+            seq->setTag(1);
             bird->runAction(seq);
         }
     };
@@ -143,7 +168,6 @@ bool PlayScene::init() {
 
 void PlayScene::update(float delta) {
     //Collision detection
-    auto tutScene = LevelChooserScene::createScene();
     int i = rand()%8;
     int j = rand()%8;
     
@@ -162,10 +186,12 @@ void PlayScene::update(float delta) {
         displayColor->setTextColor(visibleColor.at(j));
         correctColor = visibleColor.at(j);
         score++;
+        savedScore = score;
+        def->setIntegerForKey("score", savedScore);
         if (score>highScore) {
             highScore = score;
             highScoreNumber->setString(std::to_string(score));
-            def->setIntegerForKey("xxx", highScore);
+            def->setIntegerForKey("highScore", highScore);
         }
         def->flush();
         scoreNumber->setString(std::to_string(score));
@@ -180,10 +206,12 @@ void PlayScene::update(float delta) {
         displayColor->setTextColor(visibleColor.at(j));
         correctColor = visibleColor.at(j);
         score++;
+        savedScore = score;
+        def->setIntegerForKey("score", savedScore);
         if (score>highScore) {
             highScore = score;
             highScoreNumber->setString(std::to_string(score));
-            def->setIntegerForKey("xxx", highScore);
+            def->setIntegerForKey("highScore", highScore);
         }
         def->flush();
         scoreNumber->setString(std::to_string(score));
@@ -198,10 +226,12 @@ void PlayScene::update(float delta) {
         displayColor->setTextColor(visibleColor.at(j));
         correctColor = visibleColor.at(j);
         score++;
+        savedScore = score;
+        def->setIntegerForKey("score", savedScore);
         if (score>highScore) {
             highScore = score;
             highScoreNumber->setString(std::to_string(score));
-            def->setIntegerForKey("xxx", highScore);
+            def->setIntegerForKey("highScore", highScore);
         }
         def->flush();
         scoreNumber->setString(std::to_string(score));
@@ -216,10 +246,12 @@ void PlayScene::update(float delta) {
         displayColor->setTextColor(visibleColor.at(j));
         correctColor = visibleColor.at(j);
         score++;
+        savedScore = score;
+        def->setIntegerForKey("score", savedScore);
         if (score>highScore) {
             highScore = score;
             highScoreNumber->setString(std::to_string(score));
-            def->setIntegerForKey("xxx", highScore);
+            def->setIntegerForKey("highScore", highScore);
         }
         def->flush();
         scoreNumber->setString(std::to_string(score));
@@ -234,10 +266,12 @@ void PlayScene::update(float delta) {
         displayColor->setTextColor(visibleColor.at(j));
         correctColor = visibleColor.at(j);
         score++;
+        savedScore = score;
+        def->setIntegerForKey("score", savedScore);
         if (score>highScore) {
             highScore = score;
             highScoreNumber->setString(std::to_string(score));
-            def->setIntegerForKey("xxx", highScore);
+            def->setIntegerForKey("highScore", highScore);
         }
         def->flush();
         scoreNumber->setString(std::to_string(score));
@@ -251,10 +285,12 @@ void PlayScene::update(float delta) {
         displayColor->setTextColor(visibleColor.at(j));
         correctColor = visibleColor.at(j);
         score++;
+        savedScore = score;
+        def->setIntegerForKey("score", savedScore);
         if (score>highScore) {
             highScore = score;
             highScoreNumber->setString(std::to_string(score));
-            def->setIntegerForKey("xxx", highScore);
+            def->setIntegerForKey("highScore", highScore);
         }
         def->flush();
         scoreNumber->setString(std::to_string(score));
@@ -269,10 +305,12 @@ void PlayScene::update(float delta) {
         displayColor->setTextColor(visibleColor.at(j));
         correctColor = visibleColor.at(j);
         score++;
+        savedScore = score;
+        def->setIntegerForKey("score", savedScore);
         if (score>highScore) {
             highScore = score;
             highScoreNumber->setString(std::to_string(score));
-            def->setIntegerForKey("xxx", highScore);
+            def->setIntegerForKey("highScore", highScore);
         }
         def->flush();
         scoreNumber->setString(std::to_string(score));
@@ -287,10 +325,12 @@ void PlayScene::update(float delta) {
         displayColor->setTextColor(visibleColor.at(j));
         correctColor = visibleColor.at(j);
         score++;
+        savedScore = score;
+        def->setIntegerForKey("score", savedScore);
         if (score>highScore) {
             highScore = score;
             highScoreNumber->setString(std::to_string(score));
-            def->setIntegerForKey("xxx", highScore);
+            def->setIntegerForKey("highScore", highScore);
         }
         def->flush();
         scoreNumber->setString(std::to_string(score));
@@ -298,7 +338,47 @@ void PlayScene::update(float delta) {
         hit = true;
     }
     if (hit) {
-        Director::getInstance()->replaceScene(tutScene);
+        //If hit stop all actions of moving sprites
+        backgroundAssetsI[0]->stopAllActions();
+        backgroundAssetsI[1]->stopAllActions();
+        backgroundAssetsI[2]->stopAllActions();
+        backgroundAssetsI[3]->stopAllActions();
+        backgroundAssetsI[4]->stopAllActions();
+        backgroundAssetsF[0]->stopAllActions();
+        backgroundAssetsF[1]->stopAllActions();
+        backgroundAssetsF[2]->stopAllActions();
+        backgroundAssetsF[3]->stopAllActions();
+        backgroundAssetsF[4]->stopAllActions();
+        
+        balls[0]->stopAllActions();
+        balls[1]->stopAllActions();
+        balls[2]->stopAllActions();
+        balls[3]->stopAllActions();
+        balls[4]->stopAllActions();
+        balls[5]->stopAllActions();
+        balls[6]->stopAllActions();
+        balls[7]->stopAllActions();
+        
+        bird->stopActionByTag(1);
+        
+        fadeOutToDeath = true;
+    }
+    
+    if (fadeOutToDeath) {
+        auto visibleSize = Director::getInstance()->getVisibleSize();
+        auto origin = Director::getInstance()->getVisibleOrigin();
+        auto death = Sprite::create("backgrounds/sky.png");
+        death->setScale(visibleSize.width/death->getContentSize().width, visibleSize.height/death->getContentSize().height);
+        death->setAnchorPoint(Vec2(0,0));
+        death->setPosition(Vec2(origin.x,origin.y));
+        death->setOpacity(0);
+        this->addChild(death,7);
+        death->runAction(Sequence::create(FadeIn::create(0.5), CallFunc::create([&]() {changeScene = true;}), nullptr));
+    }
+    
+    if (changeScene) {
+        auto deathScene = DeathScene::createScene();
+        Director::getInstance()->replaceScene(deathScene);
     }
 }
 

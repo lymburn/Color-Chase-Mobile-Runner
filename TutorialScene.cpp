@@ -7,6 +7,8 @@
 //
 
 #include "TutorialScene.hpp"
+#include "ImageManager.hpp"
+#include "LevelChooserScene.hpp"
 
 Scene* TutorialScene::createScene()
 {
@@ -27,7 +29,7 @@ bool TutorialScene::init() {
     
     auto bird1 = Sprite::create("sprites/Flying1.png");
     auto bird2 = Sprite::create("sprites/Flying1.png");
-    auto color = Label::createWithTTF("RED", "fonts/Ubuntu-Medium.ttf", 24);
+    auto color = Label::createWithTTF("RED", "fonts/Marker Felt.ttf", 24);
     auto redBall = Sprite::create("sprites/balls/red.png");
     auto blueBall = Sprite::create("sprites/balls/blue.png");
     auto instruction = Label::createWithTTF("Catch the ball with the color of the text and avoid the other colors", "fonts/Marker Felt.ttf", 16);

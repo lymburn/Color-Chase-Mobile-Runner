@@ -11,12 +11,10 @@
 
 #include <stdio.h>
 #include "cocos2d.h"
-#include <iostream>
 #include "TextManager.hpp"
 #include "ImageManager.hpp"
 #include "ActionPerformer.hpp"
 #include "LevelChooserScene.hpp"
-#include "ui/CocosGUI.h"
 #include "TutorialScene.hpp"
 
 class TitleScene : public cocos2d::Scene {

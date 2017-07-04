@@ -12,7 +12,7 @@
 USING_NS_CC;
 using namespace std;
 #include <stdio.h>
-#include <iostream>
+
 
 class ColorDisplayer {
 public:

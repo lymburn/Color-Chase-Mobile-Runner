@@ -7,7 +7,6 @@
 //
 
 #include "ImageManager.hpp"
-#include <iostream>
 
 ImageManager::ImageManager(Scene* ScenePlaying) {
     currentScene = ScenePlaying;
@@ -36,9 +35,9 @@ ImageManager::ImageManager(Scene* ScenePlaying) {
     mountainsF->setName("mountainsF");
     cloudsF->setName("cloudsF");
     
-
     //Initial assets anchor points
     titleBackground->setAnchorPoint(Vec2(0,0));
+    deathBackground->setAnchorPoint(Vec2(0,0));
     closeTreesI->setAnchorPoint(Vec2(0,0));
     midTreesI->setAnchorPoint(Vec2(0,0));
     farTreesI->setAnchorPoint(Vec2(0,0));
@@ -88,6 +87,18 @@ void ImageManager::createStaticBackground() {
     titleBackground->setScale(visibleSize.width/titleBackground->getContentSize().width, visibleSize.height/titleBackground->getContentSize().height);
     titleBackground->setPosition(Vec2(origin.x,origin.y));
     currentScene->addChild(titleBackground,0);
+}
+
+void ImageManager::createDeathBackground() {
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    auto origin = Director::getInstance()->getVisibleOrigin();
+    deathBackground->setScale(visibleSize.width/deathBackground->getContentSize().width, visibleSize.height/deathBackground->getContentSize().height);
+    deathBackground->setPosition(Vec2(origin.x,origin.y));
+    deathBackground->setOpacity(128);
+    currentScene->addChild(deathBackground,0);
+    auto move = FadeIn::create(0.8);
+    deathBackground->runAction(move);
+    
 }
 
 //Background for the first panel
@@ -145,7 +156,6 @@ void ImageManager::createFollowingBackground() {
     cloudsF->setPosition(Vec2(visibleSize.width + origin.x, origin.y));
     currentScene->addChild(cloudsF,0);
 }
-
 
 Sprite* ImageManager::getBalls(int location) {
     return balls.at(location);

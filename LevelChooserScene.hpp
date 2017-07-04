@@ -10,9 +10,7 @@
 #define LevelChooserScene_hpp
 
 #include <stdio.h>
-#include "TextManager.hpp"
-#include "TutorialScene.hpp"
-#include "PlayScene.hpp"
+
 
 class LevelChooserScene : public cocos2d::Scene {
     

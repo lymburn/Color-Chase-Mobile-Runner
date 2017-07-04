@@ -10,14 +10,6 @@
 #define TutorialScene_hpp
 
 #include <stdio.h>
-#include "TextManager.hpp"
-#include "ColorDisplayer.hpp"
-#include "ImageManager.hpp"
-#include "ActionPerformer.hpp"
-#include <memory.h>
-#include "Bird.hpp"
-#include "BallSpawner.hpp"
-#include "TitleScene.hpp"
 
 class TutorialScene : public cocos2d::Scene {
     

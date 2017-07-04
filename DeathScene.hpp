@@ -11,8 +11,13 @@
 
 #include <stdio.h>
 
-class DeathScene {
+class DeathScene : public cocos2d::Scene {
+public:
+    static cocos2d::Scene* createScene();
+    virtual bool init();
     
+    // implement the "static create()" method manually
+    CREATE_FUNC(DeathScene);
 };
 
 #endif /* DeathScene_hpp */

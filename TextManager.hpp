@@ -11,8 +11,6 @@
 
 #include <stdio.h>
 #include "cocos2d.h"
-#include "TutorialScene.hpp"
-#include <iostream>
 USING_NS_CC;
 using namespace std;
 
@@ -20,13 +18,18 @@ class TextManager {
 public:
     void createTitle();
     void createTapToPlay();
-    void printHighScore(int highScore);
+    void printScoreAndHighScore();
+    UserDefault* def = UserDefault::getInstance();
     TextManager (Scene* scenePlaying);
     Label* getTapToPlay();
 private:
     Label* title;
     Label* tapToPlay;
-    Label* highScoreLabel;
+    Label* yourScore;
+    Label* bestScore;
+    Label* playerScoreNumber;
+    Label* highScoreNumber;
+    int score;
     Scene* currentScene;
 
 };

@@ -7,6 +7,7 @@
 //
 
 #include "ColorDisplayer.hpp"
+#include "ImageManager.hpp"
 using namespace std;
 
 ColorDisplayer::ColorDisplayer(Scene* ScenePlaying) {
@@ -35,7 +36,7 @@ ColorDisplayer::ColorDisplayer(Scene* ScenePlaying) {
     
     srand(time(NULL));
     int i = rand()%8;
-    displayColor = Label::createWithTTF(colorString.at(rand()%8), "fonts/Ubuntu-Medium.ttf", 24);
+    displayColor = Label::createWithTTF(colorString.at(rand()%8), "fonts/Marker Felt.ttf", 24);
     displayColor->setPosition(visibleSize.width/2 + origin.x, origin.y + visibleSize.height - displayColor->getContentSize().height);
     displayColor->setTextColor(visibleColor.at(i));
     setCorrectColor(i);
