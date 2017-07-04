@@ -25,7 +25,7 @@ void BallSpawner::spawnBalls(ImageManager* ImageCreator) {
     float heightInterval = visibleSize.height/6;
     
     for (int i = 0; i<8; i++) {
-        ImageCreator->getBalls(i)->setPosition(Vec2(visibleSize.width, rand()%static_cast<int>(visibleSize.height - 3*ImageCreator->getBalls(i)->getContentSize().height) + 3*ImageCreator->getBalls(i)->getContentSize().height));
+        ImageCreator->getBalls(i)->setPosition(Vec2(visibleSize.width, rand()%static_cast<int>(visibleSize.height - 2*ImageCreator->getBalls(i)->getContentSize().height) + 2*ImageCreator->getBalls(i)->getContentSize().height));
         currentScene->addChild(ImageCreator->getBalls(i),6);
     }
 }
@@ -44,31 +44,31 @@ void BallSpawner::moveBalls(ImageManager* ImageCreator) {
     auto blackBall = ImageCreator->getBalls(6);
     auto grayBall = ImageCreator->getBalls(7);
     
-    auto yellowMove = MoveBy::create(2 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(4-2))), Vec2(-visibleSize.width - yellowBall->getContentSize().width,0));
-    auto orangeMove = MoveBy::create(2 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(4-2))), Vec2(-visibleSize.width - orangeBall->getContentSize().width,0));
-    auto redMove = MoveBy::create(2 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(4-2))), Vec2(-visibleSize.width - redBall->getContentSize().width,0));
-    auto blueMove = MoveBy::create(2 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(4-2))), Vec2(-visibleSize.width - blueBall->getContentSize().width,0));
-    auto greenMove = MoveBy::create(2 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(4-2))), Vec2(-visibleSize.width - greenBall->getContentSize().width,0));
-    auto magentaMove = MoveBy::create(2 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(4-2))), Vec2(-visibleSize.width - magentaBall->getContentSize().width,0));
-    auto blackMove = MoveBy::create(2 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(4-2))), Vec2(-visibleSize.width - blackBall->getContentSize().width,0));
-    auto grayMove = MoveBy::create(2 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(4-2))), Vec2(-visibleSize.width - grayBall->getContentSize().width,0));
+    auto yellowMove = MoveBy::create(1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2.5-1))), Vec2(-visibleSize.width - yellowBall->getContentSize().width,0));
+    auto orangeMove = MoveBy::create(1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2.5-1))), Vec2(-visibleSize.width - orangeBall->getContentSize().width,0));
+    auto redMove = MoveBy::create(1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2.5-1))), Vec2(-visibleSize.width - redBall->getContentSize().width,0));
+    auto blueMove = MoveBy::create(1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2.5-1))), Vec2(-visibleSize.width - blueBall->getContentSize().width,0));
+    auto greenMove = MoveBy::create(1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2.5-1))), Vec2(-visibleSize.width - greenBall->getContentSize().width,0));
+    auto magentaMove = MoveBy::create(1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2.5-1))), Vec2(-visibleSize.width - magentaBall->getContentSize().width,0));
+    auto blackMove = MoveBy::create(1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2.5-1))), Vec2(-visibleSize.width - blackBall->getContentSize().width,0));
+    auto grayMove = MoveBy::create(1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2.5-1))), Vec2(-visibleSize.width - grayBall->getContentSize().width,0));
     
     auto yellowCb = CallFunc::create([=]() {
-        yellowBall->setPosition(visibleSize.width,rand()%static_cast<int>(visibleSize.height - 3*yellowBall->getContentSize().height) + 3*yellowBall->getContentSize().height); yellowBall->setVisible(true);});
+        yellowBall->setPosition(visibleSize.width,rand()%static_cast<int>(visibleSize.height - 2*yellowBall->getContentSize().height) + 2*yellowBall->getContentSize().height); yellowBall->setVisible(true);});
     auto orangeCb = CallFunc::create([=]() {
-        orangeBall->setPosition(visibleSize.width,rand()%static_cast<int>(visibleSize.height - 3*orangeBall->getContentSize().height) + 3*orangeBall->getContentSize().height); orangeBall->setVisible(true);});
+        orangeBall->setPosition(visibleSize.width,rand()%static_cast<int>(visibleSize.height - 2*orangeBall->getContentSize().height) + 2*orangeBall->getContentSize().height); orangeBall->setVisible(true);});
     auto redCb = CallFunc::create([=]() {
-        redBall->setPosition(visibleSize.width,rand()%static_cast<int>(visibleSize.height - 3*redBall->getContentSize().height) + 3*redBall->getContentSize().height); redBall->setVisible(true);});
+        redBall->setPosition(visibleSize.width,rand()%static_cast<int>(visibleSize.height - 2*redBall->getContentSize().height) + 2*redBall->getContentSize().height); redBall->setVisible(true);});
     auto blueCb = CallFunc::create([=]() {
-        blueBall->setPosition(visibleSize.width,rand()%static_cast<int>(visibleSize.height - 3*blueBall->getContentSize().height) + 3*blueBall->getContentSize().height); blueBall->setVisible(true);});
+        blueBall->setPosition(visibleSize.width,rand()%static_cast<int>(visibleSize.height - 2*blueBall->getContentSize().height) + 2*blueBall->getContentSize().height); blueBall->setVisible(true);});
     auto greenCb = CallFunc::create([=]() {
-        greenBall->setPosition(visibleSize.width,rand()%static_cast<int>(visibleSize.height - 3*greenBall->getContentSize().height) + 3*greenBall->getContentSize().height); greenBall->setVisible(true);});
+        greenBall->setPosition(visibleSize.width,rand()%static_cast<int>(visibleSize.height - 2*greenBall->getContentSize().height) + 2*greenBall->getContentSize().height); greenBall->setVisible(true);});
     auto magentaCb = CallFunc::create([=]() {
-        magentaBall->setPosition(visibleSize.width,rand()%static_cast<int>(visibleSize.height - 3*magentaBall->getContentSize().height) + 3*magentaBall->getContentSize().height); magentaBall->setVisible(true);});
+        magentaBall->setPosition(visibleSize.width,rand()%static_cast<int>(visibleSize.height - 2*magentaBall->getContentSize().height) + 2*magentaBall->getContentSize().height); magentaBall->setVisible(true);});
     auto blackCb = CallFunc::create([=]() {
-        blackBall->setPosition(visibleSize.width,rand()%static_cast<int>(visibleSize.height - 3*blackBall->getContentSize().height) + 3*blackBall->getContentSize().height); blackBall->setVisible(true);});
+        blackBall->setPosition(visibleSize.width,rand()%static_cast<int>(visibleSize.height - 2*blackBall->getContentSize().height) + 2*blackBall->getContentSize().height); blackBall->setVisible(true);});
     auto grayCb = CallFunc::create([=]() {
-        grayBall->setPosition(visibleSize.width,rand()%static_cast<int>(visibleSize.height - 3*grayBall->getContentSize().height) + 3*grayBall->getContentSize().height); grayBall->setVisible(true);});
+        grayBall->setPosition(visibleSize.width,rand()%static_cast<int>(visibleSize.height - 2*grayBall->getContentSize().height) + 2*grayBall->getContentSize().height); grayBall->setVisible(true);});
     
     yellowBall->runAction(RepeatForever::create(Sequence::create(DelayTime::create(0.05), yellowMove, yellowCb, NULL)));
     orangeBall->runAction(RepeatForever::create(Sequence::create(DelayTime::create(0.1), orangeMove, orangeCb, NULL)));

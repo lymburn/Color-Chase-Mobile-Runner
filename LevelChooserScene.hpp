@@ -10,7 +10,7 @@
 #define LevelChooserScene_hpp
 
 #include <stdio.h>
-
+#include "SimpleAudioEngine.h"
 
 class LevelChooserScene : public cocos2d::Scene {
     
@@ -20,6 +20,8 @@ public:
     
     void Tutorial(Ref *pSender);
     void Play(Ref *pSender);
+private:
+    CocosDenshion::SimpleAudioEngine* audio = CocosDenshion::SimpleAudioEngine::getInstance();
     
     // implement the "static create()" method manually
     CREATE_FUNC(LevelChooserScene);

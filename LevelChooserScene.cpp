@@ -12,6 +12,7 @@
 #include "ActionPerformer.hpp"
 #include "TutorialScene.hpp"
 
+
 USING_NS_CC;
 
 Scene* LevelChooserScene::createScene()
@@ -61,11 +62,13 @@ bool LevelChooserScene::init() {
 }
 
 void LevelChooserScene::Tutorial(Ref *pSender) {
+    audio->playEffect("music/whoosh.wav", false, 1.0f, 1.0f, 1.0f);
     auto tutScene = TutorialScene::createScene();
     Director::getInstance()->replaceScene(tutScene);
 }
 
 void LevelChooserScene::Play(Ref *pSender) {
+    audio->playEffect("music/whoosh.wav", false, 1.0f, 1.0f, 1.0f);
     auto playScene = PlayScene::createScene();
     Director::getInstance()->replaceScene(playScene);
 }

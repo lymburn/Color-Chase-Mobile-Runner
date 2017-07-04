@@ -25,7 +25,9 @@ bool TitleScene::init()
     {
         return false;
     }
-
+    
+    auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
+    audio->playBackgroundMusic("music/bg-music.mp3", true);
     //Creates title text and tap to play
     TextManager TextCreator(this);
     TextCreator.createTitle();
@@ -42,8 +44,9 @@ bool TitleScene::init()
     titleTapListener->setSwallowTouches(true);
     // trigger when you push down
     
-    titleTapListener->onTouchBegan = [](Touch* touch, Event* event){
+    titleTapListener->onTouchBegan = [=](Touch* touch, Event* event){
         auto levelScene = LevelChooserScene::createScene();
+        audio->playEffect("music/whoosh.wav", false, 1.0f, 1.0f, 1.0f);
         Director::getInstance()->replaceScene(levelScene);
         return true; // if you are consuming it
     };

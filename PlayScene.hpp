@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include "cocos2d.h"
+#include "SimpleAudioEngine.h"
 
 USING_NS_CC;
 using namespace std;
@@ -42,6 +43,7 @@ private:
     int score = 0;
     bool changeScene = false;
     bool fadeOutToDeath = false;
+    CocosDenshion::SimpleAudioEngine* audio;
     
     Label* scoreLabel = Label::createWithTTF("Score: ", "fonts/Marker Felt.ttf", 16);
     Label* scoreNumber = Label::createWithTTF(std::to_string(score), "fonts/Marker Felt.ttf",16);

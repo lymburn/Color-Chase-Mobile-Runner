@@ -71,6 +71,7 @@ bool TutorialScene::init() {
 }
 
 void TutorialScene::Back(Ref *pSender) {
+    audio->playEffect("music/whoosh.wav", false, 1.0f, 1.0f, 1.0f);
     auto backScene = LevelChooserScene::createScene();
     Director::getInstance()->replaceScene(backScene);
 }

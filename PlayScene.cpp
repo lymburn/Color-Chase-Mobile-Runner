@@ -30,6 +30,10 @@ bool PlayScene::init() {
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
     
+    //Play music
+    audio = CocosDenshion::SimpleAudioEngine::getInstance();
+    audio->setEffectsVolume(1.5);
+    
     //Initial score and high score labels
     scoreLabel->setPosition(Vec2(scoreLabel->getContentSize().width*0.6 + origin.x, visibleSize.height - scoreLabel->getContentSize().height*0.6 + origin.y));
     scoreLabel->setTextColor(Color4B::BLACK);
@@ -108,7 +112,7 @@ bool PlayScene::init() {
             
             float xPosition, yPosition;
             float distanceToLocation = sqrtf(powf(touch->getLocation().x - bird->getPosition().x,2) + powf(touch->getLocation().y - bird->getPosition().y,2));
-            float timeToLocation = distanceToLocation/(bird->getContentSize().width*25);
+            float timeToLocation = distanceToLocation/(bird->getContentSize().width*35);
             
             //Check whether touch location is on the edge of screen
             if (touch->getLocation().x >= (bird->getContentSize().width/2) && touch->getLocation().x <= (visibleSize.width - (bird->getContentSize().width/2)) && touch->getLocation().y >= (bird->getContentSize().height/2) && touch->getLocation().y <= (visibleSize.height - (bird->getContentSize().height/2))) {
@@ -184,6 +188,7 @@ void PlayScene::update(float delta) {
         srand (time(NULL));
         displayColor->setString(colorString.at(i));
         displayColor->setTextColor(visibleColor.at(j));
+        audio->playEffect("music/whoosh.wav", false, 1.0f, 1.0f, 1.0f);
         correctColor = visibleColor.at(j);
         score++;
         savedScore = score;
@@ -204,6 +209,7 @@ void PlayScene::update(float delta) {
         srand (time(NULL));
         displayColor->setString(colorString.at(i));
         displayColor->setTextColor(visibleColor.at(j));
+        audio->playEffect("music/whoosh.wav", false, 1.0f, 1.0f, 1.0f);
         correctColor = visibleColor.at(j);
         score++;
         savedScore = score;
@@ -224,6 +230,7 @@ void PlayScene::update(float delta) {
         srand (time(NULL));
         displayColor->setString(colorString.at(i));
         displayColor->setTextColor(visibleColor.at(j));
+        audio->playEffect("music/whoosh.wav", false, 1.0f, 1.0f, 1.0f);
         correctColor = visibleColor.at(j);
         score++;
         savedScore = score;
@@ -244,6 +251,7 @@ void PlayScene::update(float delta) {
         srand (time(NULL));
         displayColor->setString(colorString.at(i));
         displayColor->setTextColor(visibleColor.at(j));
+        audio->playEffect("music/whoosh.wav", false, 1.0f, 1.0f, 1.0f);
         correctColor = visibleColor.at(j);
         score++;
         savedScore = score;
@@ -264,6 +272,7 @@ void PlayScene::update(float delta) {
         srand (time(NULL));
         displayColor->setString(colorString.at(i));
         displayColor->setTextColor(visibleColor.at(j));
+        audio->playEffect("music/whoosh.wav", false, 1.0f, 1.0f, 1.0f);
         correctColor = visibleColor.at(j);
         score++;
         savedScore = score;
@@ -283,6 +292,7 @@ void PlayScene::update(float delta) {
         srand (time(NULL));
         displayColor->setString(colorString.at(i));
         displayColor->setTextColor(visibleColor.at(j));
+        audio->playEffect("music/whoosh.wav", false, 1.0f, 1.0f, 1.0f);
         correctColor = visibleColor.at(j);
         score++;
         savedScore = score;
@@ -303,6 +313,7 @@ void PlayScene::update(float delta) {
         srand (time(NULL));
         displayColor->setString(colorString.at(i));
         displayColor->setTextColor(visibleColor.at(j));
+        audio->playEffect("music/whoosh.wav", false, 1.0f, 1.0f, 1.0f);
         correctColor = visibleColor.at(j);
         score++;
         savedScore = score;
@@ -323,6 +334,7 @@ void PlayScene::update(float delta) {
         srand (time(NULL));
         displayColor->setString(colorString.at(i));
         displayColor->setTextColor(visibleColor.at(j));
+        audio->playEffect("music/whoosh.wav", false, 1.0f, 1.0f, 1.0f);
         correctColor = visibleColor.at(j);
         score++;
         savedScore = score;
@@ -337,6 +349,8 @@ void PlayScene::update(float delta) {
     } else if (balls[7]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor != Color4B::GRAY && balls[7]->isVisible()){
         hit = true;
     }
+    
+    //If hit by wrong ball
     if (hit) {
         //If hit stop all actions of moving sprites
         backgroundAssetsI[0]->stopAllActions();
@@ -360,7 +374,6 @@ void PlayScene::update(float delta) {
         balls[7]->stopAllActions();
         
         bird->stopActionByTag(1);
-        
         fadeOutToDeath = true;
     }
     
@@ -374,7 +387,7 @@ void PlayScene::update(float delta) {
         death->setOpacity(0);
         this->addChild(death,7);
         death->runAction(Sequence::create(FadeIn::create(0.5), CallFunc::create([&]() {changeScene = true;}), nullptr));
-    }
+}
     
     if (changeScene) {
         auto deathScene = DeathScene::createScene();
