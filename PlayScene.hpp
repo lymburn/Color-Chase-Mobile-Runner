@@ -25,9 +25,15 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(PlayScene);
     void update(float);
-    int getHighScore();
+    
     
 private:
+    void changeAfterEatingBall(int ballNumber);
+    void updateScore();
+    void setNewColorAndText();
+    void detectCollision();
+    void stopActionsWhenHit();
+    void fadeToDeath();
     Label* displayColor;
     Sprite* bird;
     Sprite* balls[8];
@@ -44,6 +50,7 @@ private:
     bool changeScene = false;
     bool fadeOutToDeath = false;
     CocosDenshion::SimpleAudioEngine* audio;
+    int currentString = 0, currentColor = 0, newString, newColor;
     
     Label* scoreLabel = Label::createWithTTF("Score: ", "fonts/Marker Felt.ttf", 16);
     Label* scoreNumber = Label::createWithTTF(std::to_string(score), "fonts/Marker Felt.ttf",16);

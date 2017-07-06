@@ -43,12 +43,14 @@ bool LevelChooserScene::init() {
     auto menuItem1 = MenuItemFont::create("PLAY", CC_CALLBACK_1(LevelChooserScene::Play, this));
     auto menuItem2 = MenuItemFont::create("TUTORIAL", CC_CALLBACK_1(LevelChooserScene::Tutorial, this));
     
-    menuItem1->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height*0.25 + origin.y));
+    menuItem1->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height*0.2 + origin.y));
     menuItem2->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height*0.1 + origin.y));
     
     menuItem1->setScale(0.6,0.6);
     menuItem2->setScale(0.6,0.6);
     
+    menuItem1->setColor(Color3B::BLACK);
+    menuItem2->setColor(Color3B::BLACK);
     auto *menu = Menu::create(menuItem1, menuItem2, NULL);
     menu->setPosition(Vec2(0, 0));
     this->addChild(menu);

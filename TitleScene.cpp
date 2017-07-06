@@ -8,6 +8,11 @@
 
 #include "TitleScene.hpp"
 #include "SimpleAudioEngine.h"
+#include "TextManager.hpp"
+#include "ImageManager.hpp"
+#include "ActionPerformer.hpp"
+#include "LevelChooserScene.hpp"
+#include "TutorialScene.hpp"
 
 
 USING_NS_CC;
@@ -26,8 +31,9 @@ bool TitleScene::init()
         return false;
     }
     
+    //Audio engine
     auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
-    audio->playBackgroundMusic("music/bg-music.mp3", true);
+
     //Creates title text and tap to play
     TextManager TextCreator(this);
     TextCreator.createTitle();
@@ -50,7 +56,6 @@ bool TitleScene::init()
         Director::getInstance()->replaceScene(levelScene);
         return true; // if you are consuming it
     };
-     
     
     // Add listener
     _eventDispatcher->addEventListenerWithSceneGraphPriority(titleTapListener, this);

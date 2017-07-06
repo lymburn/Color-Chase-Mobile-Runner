@@ -1,5 +1,6 @@
 #include "AppDelegate.h"
 #include "TitleScene.hpp"
+#include "SimpleAudioEngine.h"
 
 // #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
@@ -59,9 +60,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto glview = director->getOpenGLView();
     if(!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-        glview = GLViewImpl::createWithRect("Rebirth", cocos2d::Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
+        glview = GLViewImpl::createWithRect("Color Chase", cocos2d::Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
 #else
-        glview = GLViewImpl::create("Rebirth");
+        glview = GLViewImpl::create("Color Chase");
 #endif
         director->setOpenGLView(glview);
     }
@@ -95,7 +96,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     // create a scene. it's an autorelease object
     auto Title = TitleScene::createScene();
-
+    auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
+    audio->playBackgroundMusic("music/bg-music.mp3", true);
+    
     // run first title scene
     director->runWithScene(Title);
 

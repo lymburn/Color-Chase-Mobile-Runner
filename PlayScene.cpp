@@ -37,7 +37,7 @@ bool PlayScene::init() {
     //Initial score and high score labels
     scoreLabel->setPosition(Vec2(scoreLabel->getContentSize().width*0.6 + origin.x, visibleSize.height - scoreLabel->getContentSize().height*0.6 + origin.y));
     scoreLabel->setTextColor(Color4B::BLACK);
-    scoreNumber->setPosition(Vec2(scoreLabel->getContentSize().width + origin.x + scoreNumber->getContentSize().width, visibleSize.height - scoreNumber->getContentSize().height*0.6 + origin.y));
+    scoreNumber->setPosition(Vec2(scoreLabel->getContentSize().width + origin.x + 2*scoreNumber->getContentSize().width, visibleSize.height - scoreNumber->getContentSize().height*0.6 + origin.y));
     scoreNumber->setTextColor(Color4B::BLACK);
     highScoreLabel->setPosition(Vec2(visibleSize.width-highScoreLabel->getContentSize().width*0.6 - highScoreNumber->getContentSize().width, visibleSize.height - highScoreLabel->getContentSize().height*0.6 + origin.y));
     highScoreLabel->setTextColor(Color4B::BLACK);
@@ -51,6 +51,9 @@ bool PlayScene::init() {
     //Reset score
     def->setIntegerForKey("score", 0);
     
+    //Add score for each second dodging
+    scoreLabel->runAction(RepeatForever::create(Sequence::create(DelayTime::create(0.8), CallFunc::create([&]() {score++;}), NULL)));
+    
     //Displays the color/goal for player
     auto ColorDisplay = new ColorDisplayer(this);
     displayColor = ColorDisplay->getDisplayColor();
@@ -63,7 +66,7 @@ bool PlayScene::init() {
     ImageCreator->createInitialGameBackground();
     ImageCreator->createFollowingBackground();
     
-    //Creates the balls
+    //Creates the balls and move them
     auto BallCreator = new BallSpawner(this);
     BallCreator->spawnBalls(ImageCreator);
     BallCreator->moveBalls(ImageCreator);
@@ -98,7 +101,7 @@ bool PlayScene::init() {
     backgroundAssetsF[3] = ImageCreator->getBackgroundAsset("mountainsF");
     backgroundAssetsF[4] = ImageCreator->getBackgroundAsset("cloudsF");
     
-    //Touch listener
+    //Touch listener to move the bird around
     auto touchListener = EventListenerTouchOneByOne::create();
     bird = BirdInst->getBird();
     
@@ -139,9 +142,10 @@ bool PlayScene::init() {
                 xPosition = touch->getLocation().x;
                 yPosition = touch->getLocation().y;
             }
-            
+        
             auto move = MoveTo::create(timeToLocation,Vec2(xPosition, yPosition));
             
+            //Prevent double tapping
             auto cb = CallFunc::create([&]() {
                 if (tapped == false) {
                     tapped = true;
@@ -171,185 +175,131 @@ bool PlayScene::init() {
 }
 
 void PlayScene::update(float delta) {
-    //Collision detection
-    int i = rand()%8;
-    int j = rand()%8;
-    
-    if (i==j) {
-        if (j>=0 && j<7) {
-            j++;
-        } else if (j == 7) {
-            j--;
+    //Updates score every frame
+    updateScore();
+    //New color and text generator
+    setNewColorAndText();
+    //Detects collision every frame
+    detectCollision();
+    //Stops all actions when hit
+    stopActionsWhenHit();
+    fadeToDeath();
+    //Change scenes after fading
+    if (changeScene) {
+        auto deathScene = DeathScene::createScene();
+        Director::getInstance()->replaceScene(deathScene);
+    }
+}
+
+void PlayScene::changeAfterEatingBall(int ballNumber) {
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    auto origin = Director::getInstance()->getVisibleOrigin();
+    //Changes made after the correct ball is eaten
+    balls[ballNumber]->setVisible(false);
+    srand (time(NULL));
+    displayColor->setString(colorString.at(newString));
+    displayColor->setTextColor(visibleColor.at(newColor));
+    audio->playEffect("music/whoosh.wav", false, 1.0f, 1.0f, 1.0f);
+    correctColor = visibleColor.at(newColor);
+    //More points for eating ball closer to the right
+    if (balls[ballNumber]->getPosition().x + origin.x > origin.x && balls[ballNumber]->getPosition().x <= visibleSize.width/4 + origin.x) {
+        score+=5;
+    } else if (balls[ballNumber]->getPosition().x + origin.x > visibleSize.width/4 + origin.x && balls[ballNumber]->getPosition().x <= visibleSize.width/2 + origin.x) {
+        score += 7;
+    } else if (balls[ballNumber]->getPosition().x + origin.x > visibleSize.width/2 + origin.x && balls[ballNumber]->getPosition().x <= visibleSize.width*0.75 + origin.x) {
+        score += 10;
+    } else if (balls[ballNumber]->getPosition().x + origin.x > visibleSize.width*0.75 + origin.x && balls[ballNumber]->getPosition().x <= visibleSize.width + origin.x) {
+        score += 20;
+    }
+    currentColor = newColor;
+    currentColor = newColor;
+}
+
+void PlayScene::updateScore() {
+    //Updates score every frame
+    savedScore = score;
+    def->setIntegerForKey("score", savedScore);
+    if (score>highScore) {
+        highScore = score;
+        highScoreNumber->setString(std::to_string(score));
+        def->setIntegerForKey("highScore", highScore);
+    }
+    def->flush();
+    scoreNumber->setString(std::to_string(score));
+}
+
+void PlayScene::setNewColorAndText() {
+    newString = rand()%8; //Text string
+    newColor = rand()%8; //Text color
+    //Prevents the new color/text to be the same as the one before eating the ball
+    if (newString == currentString) {
+        if (newString>=0 && newString<7) {
+            newString++;
+        } else if (newString==7) {
+            newString--;
         }
     }
     
-    if (balls[0]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor == Color4B::YELLOW && balls[0]->isVisible()) {
-        balls[0]->setVisible(false);
-        srand (time(NULL));
-        displayColor->setString(colorString.at(i));
-        displayColor->setTextColor(visibleColor.at(j));
-        audio->playEffect("music/whoosh.wav", false, 1.0f, 1.0f, 1.0f);
-        correctColor = visibleColor.at(j);
-        score++;
-        savedScore = score;
-        def->setIntegerForKey("score", savedScore);
-        if (score>highScore) {
-            highScore = score;
-            highScoreNumber->setString(std::to_string(score));
-            def->setIntegerForKey("highScore", highScore);
+    if (newColor == currentColor) {
+        if (newColor>=0 && newColor<7) {
+            newColor++;
+        } else if (newColor==7) {
+            newColor--;
         }
-        def->flush();
-        scoreNumber->setString(std::to_string(score));
+    }
+}
+
+void PlayScene::detectCollision() {
+    //Collision detection
+    if (balls[0]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor == Color4B::YELLOW && balls[0]->isVisible()) {
+        changeAfterEatingBall(0);
     } else if (balls[0]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor != Color4B::YELLOW && balls[0]->isVisible()) {
         hit = true;
     }
     
     if (balls[1]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor == Color4B::ORANGE && balls[1]->isVisible()) {
-        balls[1]->setVisible(false);
-        srand (time(NULL));
-        displayColor->setString(colorString.at(i));
-        displayColor->setTextColor(visibleColor.at(j));
-        audio->playEffect("music/whoosh.wav", false, 1.0f, 1.0f, 1.0f);
-        correctColor = visibleColor.at(j);
-        score++;
-        savedScore = score;
-        def->setIntegerForKey("score", savedScore);
-        if (score>highScore) {
-            highScore = score;
-            highScoreNumber->setString(std::to_string(score));
-            def->setIntegerForKey("highScore", highScore);
-        }
-        def->flush();
-        scoreNumber->setString(std::to_string(score));
+        changeAfterEatingBall(1);
     } else if (balls[1]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor != Color4B::ORANGE && balls[1]->isVisible()){
         hit = true;
     }
     
     if (balls[2]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor == Color4B::RED && balls[2]->isVisible()) {
-        balls[2]->setVisible(false);
-        srand (time(NULL));
-        displayColor->setString(colorString.at(i));
-        displayColor->setTextColor(visibleColor.at(j));
-        audio->playEffect("music/whoosh.wav", false, 1.0f, 1.0f, 1.0f);
-        correctColor = visibleColor.at(j);
-        score++;
-        savedScore = score;
-        def->setIntegerForKey("score", savedScore);
-        if (score>highScore) {
-            highScore = score;
-            highScoreNumber->setString(std::to_string(score));
-            def->setIntegerForKey("highScore", highScore);
-        }
-        def->flush();
-        scoreNumber->setString(std::to_string(score));
+        changeAfterEatingBall(2);
     } else if (balls[2]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor != Color4B::RED && balls[2]->isVisible()){
         hit = true;
     }
     
     if (balls[3]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor == Color4B::BLUE && balls[3]->isVisible()) {
-        balls[3]->setVisible(false);
-        srand (time(NULL));
-        displayColor->setString(colorString.at(i));
-        displayColor->setTextColor(visibleColor.at(j));
-        audio->playEffect("music/whoosh.wav", false, 1.0f, 1.0f, 1.0f);
-        correctColor = visibleColor.at(j);
-        score++;
-        savedScore = score;
-        def->setIntegerForKey("score", savedScore);
-        if (score>highScore) {
-            highScore = score;
-            highScoreNumber->setString(std::to_string(score));
-            def->setIntegerForKey("highScore", highScore);
-        }
-        def->flush();
-        scoreNumber->setString(std::to_string(score));
+        changeAfterEatingBall(3);
     } else if (balls[3]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor != Color4B::BLUE && balls[3]->isVisible()){
         hit = true;
     }
     
     if (balls[4]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor == Color4B::GREEN && balls[4]->isVisible()) {
-        balls[4]->setVisible(false);
-        srand (time(NULL));
-        displayColor->setString(colorString.at(i));
-        displayColor->setTextColor(visibleColor.at(j));
-        audio->playEffect("music/whoosh.wav", false, 1.0f, 1.0f, 1.0f);
-        correctColor = visibleColor.at(j);
-        score++;
-        savedScore = score;
-        def->setIntegerForKey("score", savedScore);
-        if (score>highScore) {
-            highScore = score;
-            highScoreNumber->setString(std::to_string(score));
-            def->setIntegerForKey("highScore", highScore);
-        }
-        def->flush();
-        scoreNumber->setString(std::to_string(score));
+        changeAfterEatingBall(4);
     } else if (balls[4]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor != Color4B::GREEN && balls[4]->isVisible()){
         hit = true;
     }
     if (balls[5]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor == Color4B::MAGENTA && balls[5]->isVisible()) {
-        balls[5]->setVisible(false);
-        srand (time(NULL));
-        displayColor->setString(colorString.at(i));
-        displayColor->setTextColor(visibleColor.at(j));
-        audio->playEffect("music/whoosh.wav", false, 1.0f, 1.0f, 1.0f);
-        correctColor = visibleColor.at(j);
-        score++;
-        savedScore = score;
-        def->setIntegerForKey("score", savedScore);
-        if (score>highScore) {
-            highScore = score;
-            highScoreNumber->setString(std::to_string(score));
-            def->setIntegerForKey("highScore", highScore);
-        }
-        def->flush();
-        scoreNumber->setString(std::to_string(score));
+        changeAfterEatingBall(5);
     } else if (balls[5]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor != Color4B::MAGENTA && balls[5]->isVisible()){
         hit = true;
     }
     
     if (balls[6]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor == Color4B::BLACK && balls[6]->isVisible()) {
-        balls[6]->setVisible(false);
-        srand (time(NULL));
-        displayColor->setString(colorString.at(i));
-        displayColor->setTextColor(visibleColor.at(j));
-        audio->playEffect("music/whoosh.wav", false, 1.0f, 1.0f, 1.0f);
-        correctColor = visibleColor.at(j);
-        score++;
-        savedScore = score;
-        def->setIntegerForKey("score", savedScore);
-        if (score>highScore) {
-            highScore = score;
-            highScoreNumber->setString(std::to_string(score));
-            def->setIntegerForKey("highScore", highScore);
-        }
-        def->flush();
-        scoreNumber->setString(std::to_string(score));
+        changeAfterEatingBall(6);
     } else if (balls[6]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor != Color4B::BLACK && balls[6]->isVisible()){
         hit = true;
     }
     
     if (balls[7]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor == Color4B::GRAY && balls[7]->isVisible()) {
-        balls[7]->setVisible(false);
-        srand (time(NULL));
-        displayColor->setString(colorString.at(i));
-        displayColor->setTextColor(visibleColor.at(j));
-        audio->playEffect("music/whoosh.wav", false, 1.0f, 1.0f, 1.0f);
-        correctColor = visibleColor.at(j);
-        score++;
-        savedScore = score;
-        def->setIntegerForKey("score", savedScore);
-        if (score>highScore) {
-            highScore = score;
-            highScoreNumber->setString(std::to_string(score));
-            def->setIntegerForKey("highScore", highScore);
-        }
-        def->flush();
-        scoreNumber->setString(std::to_string(score));
+        changeAfterEatingBall(7);
     } else if (balls[7]->getBoundingBox().intersectsRect(bird->getBoundingBox()) && correctColor != Color4B::GRAY && balls[7]->isVisible()){
         hit = true;
     }
-    
+}
+
+void PlayScene::stopActionsWhenHit() {
     //If hit by wrong ball
     if (hit) {
         //If hit stop all actions of moving sprites
@@ -373,10 +323,13 @@ void PlayScene::update(float delta) {
         balls[6]->stopAllActions();
         balls[7]->stopAllActions();
         
+        scoreLabel->stopAllActions();
         bird->stopActionByTag(1);
         fadeOutToDeath = true;
     }
-    
+}
+
+void PlayScene::fadeToDeath() {
     if (fadeOutToDeath) {
         auto visibleSize = Director::getInstance()->getVisibleSize();
         auto origin = Director::getInstance()->getVisibleOrigin();
@@ -387,15 +340,5 @@ void PlayScene::update(float delta) {
         death->setOpacity(0);
         this->addChild(death,7);
         death->runAction(Sequence::create(FadeIn::create(0.5), CallFunc::create([&]() {changeScene = true;}), nullptr));
-}
-    
-    if (changeScene) {
-        auto deathScene = DeathScene::createScene();
-        Director::getInstance()->replaceScene(deathScene);
     }
 }
-
-int PlayScene::getHighScore() {
-    return highScore;
-}
-

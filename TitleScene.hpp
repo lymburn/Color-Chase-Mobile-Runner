@@ -11,11 +11,7 @@
 
 #include <stdio.h>
 #include "cocos2d.h"
-#include "TextManager.hpp"
-#include "ImageManager.hpp"
-#include "ActionPerformer.hpp"
-#include "LevelChooserScene.hpp"
-#include "TutorialScene.hpp"
+
 
 class TitleScene : public cocos2d::Scene {
     
@@ -25,6 +21,8 @@ public:
 
     // implement the "static create()" method manually
     CREATE_FUNC(TitleScene);
+private:
+    bool musicStarted = false;
 };
 
 #endif /* TitleScene_hpp */

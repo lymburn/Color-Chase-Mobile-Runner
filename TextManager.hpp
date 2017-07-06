@@ -19,6 +19,7 @@ public:
     void createTitle();
     void createTapToPlay();
     void printScoreAndHighScore();
+    void createScoreLabels();
     UserDefault* def = UserDefault::getInstance();
     TextManager (Scene* scenePlaying);
     Label* getTapToPlay();
@@ -27,8 +28,8 @@ private:
     Label* tapToPlay;
     Label* yourScore;
     Label* bestScore;
-    Label* playerScoreNumber;
-    Label* highScoreNumber;
+    Label* deathScenePlayerScoreNumber;
+    Label* deathSceneHighScoreNumber;
     int score;
     Scene* currentScene;
 

@@ -32,7 +32,7 @@ bool TutorialScene::init() {
     auto color = Label::createWithTTF("RED", "fonts/Marker Felt.ttf", 24);
     auto redBall = Sprite::create("sprites/balls/red.png");
     auto blueBall = Sprite::create("sprites/balls/blue.png");
-    auto instruction = Label::createWithTTF("Catch the ball with the color of the text and avoid the other colors", "fonts/Marker Felt.ttf", 16);
+    auto instruction = Label::createWithTTF("Catch the ball with the color of the text and avoid the other colors.\nEarn more points by flying closer to the right!", "fonts/Marker Felt.ttf", 16);
     auto checkMark = Sprite::create("sprites/checkmark.png");
     auto xMark = Sprite::create("sprites/cross.png");
     auto goBack = MenuItemFont::create("Back", CC_CALLBACK_1(TutorialScene::Back, this));
@@ -46,12 +46,14 @@ bool TutorialScene::init() {
     bird2->setScale(1.5,1.5);
     redBall->setPosition(Vec2(visibleSize.width*0.4 + origin.x, visibleSize.height/2 + origin.y));
     blueBall->setPosition(Vec2(visibleSize.width*0.7 + origin.x, visibleSize.height/2 + origin.y));
-    instruction->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height*0.35));
+    instruction->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height*0.38));
+    instruction->setTextColor(Color4B::BLACK);
     checkMark->setPosition(Vec2(visibleSize.width*0.65, visibleSize.height*0.7));
     xMark->setPosition(Vec2(visibleSize.width*0.35, visibleSize.height*0.7));
     
     goBack->setPosition(Vec2(goBack->getContentSize().width/2 + origin.x, goBack->getContentSize().height/2 + origin.y));
     goBack->setScale(0.6,0.6);
+    goBack->setColor(Color3B::BLACK);
     auto *backButton = Menu::create(goBack, NULL);
     backButton->setPosition(Vec2(0, 0));
     

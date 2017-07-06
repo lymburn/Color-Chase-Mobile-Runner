@@ -31,7 +31,7 @@ void BallSpawner::spawnBalls(ImageManager* ImageCreator) {
 }
 
 void BallSpawner::moveBalls(ImageManager* ImageCreator) {
-    //Move the balls across the screen
+    //Move the balls across the screen and reset them
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
     srand (time(NULL));
@@ -44,15 +44,17 @@ void BallSpawner::moveBalls(ImageManager* ImageCreator) {
     auto blackBall = ImageCreator->getBalls(6);
     auto grayBall = ImageCreator->getBalls(7);
     
-    auto yellowMove = MoveBy::create(1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2.5-1))), Vec2(-visibleSize.width - yellowBall->getContentSize().width,0));
-    auto orangeMove = MoveBy::create(1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2.5-1))), Vec2(-visibleSize.width - orangeBall->getContentSize().width,0));
-    auto redMove = MoveBy::create(1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2.5-1))), Vec2(-visibleSize.width - redBall->getContentSize().width,0));
-    auto blueMove = MoveBy::create(1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2.5-1))), Vec2(-visibleSize.width - blueBall->getContentSize().width,0));
-    auto greenMove = MoveBy::create(1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2.5-1))), Vec2(-visibleSize.width - greenBall->getContentSize().width,0));
-    auto magentaMove = MoveBy::create(1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2.5-1))), Vec2(-visibleSize.width - magentaBall->getContentSize().width,0));
-    auto blackMove = MoveBy::create(1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2.5-1))), Vec2(-visibleSize.width - blackBall->getContentSize().width,0));
-    auto grayMove = MoveBy::create(1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2.5-1))), Vec2(-visibleSize.width - grayBall->getContentSize().width,0));
+    //Move the balls across the screen between 1 and 2 seconds
+    auto yellowMove = MoveBy::create(1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2-1))), Vec2(-visibleSize.width - yellowBall->getContentSize().width,0));
+    auto orangeMove = MoveBy::create(1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2-1))), Vec2(-visibleSize.width - orangeBall->getContentSize().width,0));
+    auto redMove = MoveBy::create(1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2-1))), Vec2(-visibleSize.width - redBall->getContentSize().width,0));
+    auto blueMove = MoveBy::create(1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2-1))), Vec2(-visibleSize.width - blueBall->getContentSize().width,0));
+    auto greenMove = MoveBy::create(1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2-1))), Vec2(-visibleSize.width - greenBall->getContentSize().width,0));
+    auto magentaMove = MoveBy::create(1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2-1))), Vec2(-visibleSize.width - magentaBall->getContentSize().width,0));
+    auto blackMove = MoveBy::create(1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2-1))), Vec2(-visibleSize.width - blackBall->getContentSize().width,0));
+    auto grayMove = MoveBy::create(1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2-1))), Vec2(-visibleSize.width - grayBall->getContentSize().width,0));
     
+    //Callback to reset balls to edge of screen
     auto yellowCb = CallFunc::create([=]() {
         yellowBall->setPosition(visibleSize.width,rand()%static_cast<int>(visibleSize.height - 2*yellowBall->getContentSize().height) + 2*yellowBall->getContentSize().height); yellowBall->setVisible(true);});
     auto orangeCb = CallFunc::create([=]() {
