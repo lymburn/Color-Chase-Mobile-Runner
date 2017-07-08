@@ -17,7 +17,7 @@ class BallSpawner {
 public:
     BallSpawner(Scene* ScenePlaying);
     void spawnBalls(ImageManager* ImageCreator);
-    void moveBalls(ImageManager* ImageCreator);
+    void moveBalls(ImageManager* ImageCreator, string difficulty);
 private:
     Scene* currentScene;
 };

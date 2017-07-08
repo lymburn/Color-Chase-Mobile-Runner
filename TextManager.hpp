@@ -27,7 +27,9 @@ private:
     Label* title;
     Label* tapToPlay;
     Label* yourScore;
-    Label* bestScore;
+    Label* bestEasyScore;
+    Label* bestMedScore;
+    Label* bestHardScore;
     Label* deathScenePlayerScoreNumber;
     Label* deathSceneHighScoreNumber;
     int score;

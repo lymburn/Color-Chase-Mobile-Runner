@@ -19,11 +19,13 @@ Scene* DeathScene::createScene()
 }
 
 bool DeathScene::init() {
+    
     //super init first
     if ( !Scene::init() )
     {
         return false;
     }
+    
     auto visibleSize = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
     

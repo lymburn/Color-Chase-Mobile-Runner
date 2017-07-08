@@ -32,7 +32,7 @@ bool TutorialScene::init() {
     auto color = Label::createWithTTF("RED", "fonts/Marker Felt.ttf", 24);
     auto redBall = Sprite::create("sprites/balls/red.png");
     auto blueBall = Sprite::create("sprites/balls/blue.png");
-    auto instruction = Label::createWithTTF("Catch the ball with the color of the text and avoid the other colors.\nEarn more points by flying closer to the right!", "fonts/Marker Felt.ttf", 16);
+    auto instruction = Label::createWithTTF("Tap anywhere to move the bird and catch the correct colors", "fonts/Marker Felt.ttf", 16);
     auto checkMark = Sprite::create("sprites/checkmark.png");
     auto xMark = Sprite::create("sprites/cross.png");
     auto goBack = MenuItemFont::create("Back", CC_CALLBACK_1(TutorialScene::Back, this));

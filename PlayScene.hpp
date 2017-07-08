@@ -26,7 +26,6 @@ public:
     CREATE_FUNC(PlayScene);
     void update(float);
     
-    
 private:
     void changeAfterEatingBall(int ballNumber);
     void updateScore();
@@ -44,7 +43,9 @@ private:
     vector<string> colorString;
     vector<Color4B> visibleColor;
     UserDefault* def = UserDefault::getInstance();
-    int highScore = def->getIntegerForKey("highScore", 0);
+    int easyHighScore = def->getIntegerForKey("easyHighScore", 0);
+    int medHighScore = def->getIntegerForKey("medHighScore", 0);
+    int hardHighScore = def->getIntegerForKey("hardHighScore", 0);
     int savedScore = 0;
     int score = 0;
     bool changeScene = false;
@@ -55,6 +56,8 @@ private:
     Label* scoreLabel = Label::createWithTTF("Score: ", "fonts/Marker Felt.ttf", 16);
     Label* scoreNumber = Label::createWithTTF(std::to_string(score), "fonts/Marker Felt.ttf",16);
     Label* highScoreLabel = Label::createWithTTF("High Score: ", "fonts/Marker Felt.ttf", 16);
-    Label* highScoreNumber = Label::createWithTTF(std::to_string(highScore), "fonts/Marker Felt.ttf",16);
+    Label* easyHighScoreNumber = Label::createWithTTF(std::to_string(easyHighScore), "fonts/Marker Felt.ttf",16);
+    Label* medHighScoreNumber = Label::createWithTTF(std::to_string(medHighScore), "fonts/Marker Felt.ttf",16);
+    Label* hardHighScoreNumber = Label::createWithTTF(std::to_string(hardHighScore), "fonts/Marker Felt.ttf",16);
 };
 #endif /* PlayScene_hpp */

@@ -11,6 +11,7 @@
 #include "PlayScene.hpp"
 #include "ActionPerformer.hpp"
 #include "TutorialScene.hpp"
+#include "DifficultyChooserScene.hpp"
 
 
 USING_NS_CC;
@@ -43,8 +44,8 @@ bool LevelChooserScene::init() {
     auto menuItem1 = MenuItemFont::create("PLAY", CC_CALLBACK_1(LevelChooserScene::Play, this));
     auto menuItem2 = MenuItemFont::create("TUTORIAL", CC_CALLBACK_1(LevelChooserScene::Tutorial, this));
     
-    menuItem1->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height*0.2 + origin.y));
-    menuItem2->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height*0.1 + origin.y));
+    menuItem1->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height*0.3 + origin.y));
+    menuItem2->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height*0.2 + origin.y));
     
     menuItem1->setScale(0.6,0.6);
     menuItem2->setScale(0.6,0.6);
@@ -71,7 +72,7 @@ void LevelChooserScene::Tutorial(Ref *pSender) {
 
 void LevelChooserScene::Play(Ref *pSender) {
     audio->playEffect("music/whoosh.wav", false, 1.0f, 1.0f, 1.0f);
-    auto playScene = PlayScene::createScene();
-    Director::getInstance()->replaceScene(playScene);
+    auto difficultyScene = DifficultyChooserScene::createScene();
+    Director::getInstance()->replaceScene(difficultyScene);
 }
 

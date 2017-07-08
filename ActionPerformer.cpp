@@ -33,11 +33,11 @@ void ActionPerformer::parallaxScrolling(Node* closeTreesI, Node* midTreesI, Node
     auto origin = Director::getInstance()->getVisibleOrigin();
     float initialCloseTreesTime, initialMidTreesTime, initialFarTreesTime, initialMountainsTime, initialCloudsTime, closeTreesTimeF, midTreesTimeF, farTreesTimeF, mountainsTimeF, cloudsTimeF;
     //Initial times for the first panel to move out of screen
-    initialCloseTreesTime = 4;
-    initialMidTreesTime= 8;
-    initialFarTreesTime= 16;
-    initialMountainsTime = 35;
-    initialCloudsTime = 25;
+    initialCloseTreesTime = 3;
+    initialMidTreesTime= 6;
+    initialFarTreesTime= 14;
+    initialMountainsTime = 33;
+    initialCloudsTime = 22;
 
     //Times for the following panel
     closeTreesTimeF = 2*initialCloseTreesTime;

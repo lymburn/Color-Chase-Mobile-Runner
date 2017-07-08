@@ -8,6 +8,7 @@
 
 #ifndef TutorialScene_hpp
 #define TutorialScene_hpp
+USING_NS_CC;
 
 #include <stdio.h>
 #include "SimpleAudioEngine.h"
@@ -21,6 +22,7 @@ public:
     
 private:
     CocosDenshion::SimpleAudioEngine* audio = CocosDenshion::SimpleAudioEngine::getInstance();
+    Sprite* bird;
     // implement the "static create()" method manually
     CREATE_FUNC(TutorialScene);
 

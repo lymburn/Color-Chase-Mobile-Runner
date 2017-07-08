@@ -25,7 +25,7 @@ void TextManager::createTapToPlay() {
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     tapToPlay = Label::createWithTTF("TAP TO PLAY!", "fonts/Marker Felt.ttf", 16);
     tapToPlay->setTextColor(Color4B::BLACK);
-    tapToPlay->setPosition(Vec2(origin.x + visibleSize.width/2, origin.y + visibleSize.height*0.2));
+    tapToPlay->setPosition(Vec2(origin.x + visibleSize.width/2, origin.y + visibleSize.height*0.3));
     tapToPlay->enableShadow(Color4B::GRAY,Size(1,-1),0);
     currentScene->addChild(tapToPlay,1);
 }
@@ -49,26 +49,57 @@ void TextManager::printScoreAndHighScore() {
     yourScore->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height - 1.3*yourScore->getContentSize().height + origin.y));
     yourScore->setColor(Color3B::BLACK);
     
-    bestScore = Label::createWithTTF("BEST SCORE", "fonts/Marker Felt.ttf", 25);
-    bestScore->enableShadow(Color4B::GRAY,Size(1,-1),0);
-    bestScore->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height*0.22 + origin.y));
-    bestScore->setColor(Color3B::BLACK);
+    bestEasyScore = Label::createWithTTF("EASY HIGH SCORE", "fonts/Marker Felt.ttf", 25);
+    bestEasyScore->enableShadow(Color4B::GRAY,Size(1,-1),0);
+    bestEasyScore->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height*0.22 + origin.y));
+    bestEasyScore->setColor(Color3B::BLACK);
+    
+    bestMedScore = Label::createWithTTF("MEDIUM HIGH SCORE", "fonts/Marker Felt.ttf", 25);
+    bestMedScore->enableShadow(Color4B::GRAY,Size(1,-1),0);
+    bestMedScore->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height*0.22 + origin.y));
+    bestMedScore->setColor(Color3B::BLACK);
+    
+    bestHardScore = Label::createWithTTF("HARD HIGH SCORE", "fonts/Marker Felt.ttf", 25);
+    bestHardScore->enableShadow(Color4B::GRAY,Size(1,-1),0);
+    bestHardScore->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height*0.22 + origin.y));
+    bestHardScore->setColor(Color3B::BLACK);
     
     deathScenePlayerScoreNumber = Label::createWithTTF(std::to_string(def->getIntegerForKey("score")), "fonts/Marker Felt.ttf", 20);
     deathScenePlayerScoreNumber->setPosition(Vec2(visibleSize.width/2 + origin.x, yourScore->getPosition().y - 3*deathScenePlayerScoreNumber->getContentSize().height + origin.y));
     deathScenePlayerScoreNumber->setColor(Color3B::BLACK);
     
-    deathSceneHighScoreNumber = Label::createWithTTF(std::to_string(def->getIntegerForKey("highScore")), "fonts/Marker Felt.ttf", 20);
-    deathSceneHighScoreNumber->setPosition(Vec2(visibleSize.width/2 + origin.x, bestScore->getPosition().y - 3*deathSceneHighScoreNumber->getContentSize().height + origin.y));
+    if (def->getStringForKey("difficulty") == "easy") {
+        deathSceneHighScoreNumber = Label::createWithTTF(std::to_string(def->getIntegerForKey("easyHighScore")), "fonts/Marker Felt.ttf", 20);
+        bestEasyScore->setVisible(true);
+        bestMedScore->setVisible(false);
+        bestHardScore->setVisible(false);
+    } else if (def->getStringForKey("difficulty") == "medium") {
+        deathSceneHighScoreNumber = Label::createWithTTF(std::to_string(def->getIntegerForKey("medHighScore")), "fonts/Marker Felt.ttf", 20);
+        bestEasyScore->setVisible(false);
+        bestMedScore->setVisible(true);
+        bestHardScore->setVisible(false);
+    } else if (def->getStringForKey("difficulty") == "hard") {
+        deathSceneHighScoreNumber = Label::createWithTTF(std::to_string(def->getIntegerForKey("hardHighScore")), "fonts/Marker Felt.ttf", 20);
+        bestEasyScore->setVisible(false);
+        bestMedScore->setVisible(false);
+        bestHardScore->setVisible(true);
+    }
+    
+    deathSceneHighScoreNumber->setPosition(Vec2(visibleSize.width/2 + origin.x, bestEasyScore->getPosition().y - 3*deathSceneHighScoreNumber->getContentSize().height + origin.y));
     deathSceneHighScoreNumber->setColor(Color3B::BLACK);
     
     currentScene->addChild(yourScore,1);
-    currentScene->addChild(bestScore,1);
+    currentScene->addChild(bestEasyScore,1);
+    currentScene->addChild(bestMedScore,1);
+    currentScene->addChild(bestHardScore,1);
     currentScene->addChild(deathSceneHighScoreNumber,1);
     currentScene->addChild(deathScenePlayerScoreNumber,1);
     PerformActions.fadeIn(yourScore);
-    PerformActions.fadeIn(bestScore);
+    PerformActions.fadeIn(bestEasyScore);
+    PerformActions.fadeIn(bestMedScore);
+    PerformActions.fadeIn(bestHardScore);
 }
+
 
 
 
