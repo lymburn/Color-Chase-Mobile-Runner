@@ -18,6 +18,7 @@ class TextManager {
 public:
     void createTitle();
     void createTapToPlay();
+    void createTutorialInstructions();
     void printScoreAndHighScore();
     void createScoreLabels();
     UserDefault* def = UserDefault::getInstance();
@@ -26,6 +27,7 @@ public:
 private:
     Label* title;
     Label* tapToPlay;
+    Label* instruction;
     Label* yourScore;
     Label* bestEasyScore;
     Label* bestMedScore;

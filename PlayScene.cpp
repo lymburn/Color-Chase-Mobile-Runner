@@ -33,20 +33,31 @@ bool PlayScene::init() {
     //Play music
     audio = CocosDenshion::SimpleAudioEngine::getInstance();
     audio->setEffectsVolume(1.5);
-    
+        
     //Initial score and high score labels
     scoreLabel->setPosition(Vec2(scoreLabel->getContentSize().width*0.6 + origin.x, visibleSize.height - scoreLabel->getContentSize().height*0.6 + origin.y));
     scoreLabel->setTextColor(Color4B::BLACK);
     scoreNumber->setPosition(Vec2(scoreLabel->getContentSize().width + origin.x + 2*scoreNumber->getContentSize().width, visibleSize.height - scoreNumber->getContentSize().height*0.6 + origin.y));
     scoreNumber->setTextColor(Color4B::BLACK);
-    highScoreLabel->setPosition(Vec2(visibleSize.width-highScoreLabel->getContentSize().width*0.6 - highScoreNumber->getContentSize().width, visibleSize.height - highScoreLabel->getContentSize().height*0.6 + origin.y));
+    highScoreLabel->setPosition(Vec2(visibleSize.width-highScoreLabel->getContentSize().width*0.7 - easyHighScoreNumber->getContentSize().width, visibleSize.height - highScoreLabel->getContentSize().height*0.6 + origin.y));
     highScoreLabel->setTextColor(Color4B::BLACK);
-    highScoreNumber->setPosition(Vec2(visibleSize.width - highScoreNumber->getContentSize().width*0.6 + origin.x, visibleSize.height - highScoreNumber->getContentSize().height*0.6 + origin.y));
-    highScoreNumber->setTextColor(Color4B::BLACK);
+    //Add high score number based on difficulty
+    if (def->getStringForKey("difficulty") == "easy") {
+        easyHighScoreNumber->setPosition(Vec2(visibleSize.width - easyHighScoreNumber->getContentSize().width*0.9 + origin.x, visibleSize.height - easyHighScoreNumber->getContentSize().height*0.6 + origin.y));
+        easyHighScoreNumber->setTextColor(Color4B::BLACK);
+        this->addChild(easyHighScoreNumber,6);
+    } else if (def->getStringForKey("difficulty") == "medium") {
+        medHighScoreNumber->setPosition(Vec2(visibleSize.width - medHighScoreNumber->getContentSize().width*0.9 + origin.x, visibleSize.height - medHighScoreNumber->getContentSize().height*0.6 + origin.y));
+        medHighScoreNumber->setTextColor(Color4B::BLACK);
+        this->addChild(medHighScoreNumber,6);
+    } else {
+        hardHighScoreNumber->setPosition(Vec2(visibleSize.width - hardHighScoreNumber->getContentSize().width*0.9 + origin.x, visibleSize.height - hardHighScoreNumber->getContentSize().height*0.6 + origin.y));
+        hardHighScoreNumber->setTextColor(Color4B::BLACK);
+        this->addChild(hardHighScoreNumber,6);
+    }
     this->addChild(scoreLabel,6);
     this->addChild(scoreNumber,6);
     this->addChild(highScoreLabel,6);
-    this->addChild(highScoreNumber,6);
     
     //Reset score
     def->setIntegerForKey("score", 0);
@@ -69,7 +80,7 @@ bool PlayScene::init() {
     //Creates the balls and move them
     auto BallCreator = new BallSpawner(this);
     BallCreator->spawnBalls(ImageCreator);
-    BallCreator->moveBalls(ImageCreator);
+    BallCreator->moveBalls(ImageCreator, def->getStringForKey("difficulty"));
     
     auto PerformActions = new ActionPerformer;
     //Infinite background scrolling
@@ -219,10 +230,18 @@ void PlayScene::updateScore() {
     //Updates score every frame
     savedScore = score;
     def->setIntegerForKey("score", savedScore);
-    if (score>highScore) {
-        highScore = score;
-        highScoreNumber->setString(std::to_string(score));
-        def->setIntegerForKey("highScore", highScore);
+    if (score>easyHighScore && def->getStringForKey("difficulty") == "easy") {
+        easyHighScore = score;
+        easyHighScoreNumber->setString(std::to_string(score));
+        def->setIntegerForKey("easyHighScore", easyHighScore);
+    } else if (score>medHighScore && def->getStringForKey("difficulty") == "medium") {
+        medHighScore = score;
+        medHighScoreNumber->setString(std::to_string(score));
+        def->setIntegerForKey("medHighScore", medHighScore);
+    } else if (score>hardHighScore && def->getStringForKey("difficulty") == "hard") {
+        hardHighScore = score;
+        hardHighScoreNumber->setString(std::to_string(score));
+        def->setIntegerForKey("hardHighScore", hardHighScore);
     }
     def->flush();
     scoreNumber->setString(std::to_string(score));

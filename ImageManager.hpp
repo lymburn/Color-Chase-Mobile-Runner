@@ -18,6 +18,7 @@ public:
     void createInitialGameBackground();
     void createFollowingBackground();
     void createDeathBackground();
+    void createTutorialPictureInstructions();
     Sprite* getBalls(int location);
     Sprite* getBackgroundAsset(std::string name);
 private:

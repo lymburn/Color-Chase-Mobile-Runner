@@ -161,6 +161,37 @@ Sprite* ImageManager::getBalls(int location) {
     return balls.at(location);
 }
 
+void ImageManager::createTutorialPictureInstructions() {
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    auto origin = Director::getInstance()->getVisibleOrigin();
+    
+    auto bird1 = Sprite::create("sprites/Flying1.png");
+    auto bird2 = Sprite::create("sprites/Flying1.png");
+    auto color = Label::createWithTTF("RED", "fonts/Marker Felt.ttf", 24);
+    auto redBall = Sprite::create("sprites/balls/red.png");
+    auto blueBall = Sprite::create("sprites/balls/blue.png");
+    auto checkMark = Sprite::create("sprites/checkmark.png");
+    auto xMark = Sprite::create("sprites/cross.png");
+    
+    color->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height-color->getContentSize().height + origin.y));
+    color->setTextColor(Color4B::BLUE);
+    bird1->setPosition(Vec2(visibleSize.width*0.3 + origin.x,visibleSize.height/2 + origin.y));
+    bird1->setScale(1.5,1.5);
+    bird2->setPosition(Vec2(visibleSize.width*0.6 + origin.x,visibleSize.height/2 + origin.y));
+    bird2->setScale(1.5,1.5);
+    redBall->setPosition(Vec2(visibleSize.width*0.4 + origin.x, visibleSize.height/2 + origin.y));
+    blueBall->setPosition(Vec2(visibleSize.width*0.7 + origin.x, visibleSize.height/2 + origin.y));
+    checkMark->setPosition(Vec2(visibleSize.width*0.65, visibleSize.height*0.7));
+    xMark->setPosition(Vec2(visibleSize.width*0.35, visibleSize.height*0.7));
+
+    currentScene->addChild(bird1,1);
+    currentScene->addChild(bird2,1);
+    currentScene->addChild(color,1);
+    currentScene->addChild(redBall,1);
+    currentScene->addChild(blueBall,1);
+    currentScene->addChild(checkMark,1);
+    currentScene->addChild(xMark,1);
+}
 
 
 

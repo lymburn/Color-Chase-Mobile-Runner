@@ -21,7 +21,8 @@ class DifficultyChooserScene : public cocos2d::Scene {
 public:
     static cocos2d::Scene* createScene();
     virtual bool init();
-    
+private:
+    void Back(Ref *pSender);
     void Easy(Ref *pSender);
     void Medium(Ref *pSender);
     void Hard(Ref *pSender);

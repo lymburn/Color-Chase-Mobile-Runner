@@ -25,7 +25,7 @@ void TextManager::createTapToPlay() {
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     tapToPlay = Label::createWithTTF("TAP TO PLAY!", "fonts/Marker Felt.ttf", 16);
     tapToPlay->setTextColor(Color4B::BLACK);
-    tapToPlay->setPosition(Vec2(origin.x + visibleSize.width/2, origin.y + visibleSize.height*0.3));
+    tapToPlay->setPosition(Vec2(origin.x + visibleSize.width/2, origin.y + visibleSize.height*0.25));
     tapToPlay->enableShadow(Color4B::GRAY,Size(1,-1),0);
     currentScene->addChild(tapToPlay,1);
 }
@@ -59,7 +59,7 @@ void TextManager::printScoreAndHighScore() {
     bestMedScore->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height*0.22 + origin.y));
     bestMedScore->setColor(Color3B::BLACK);
     
-    bestHardScore = Label::createWithTTF("HARD HIGH SCORE", "fonts/Marker Felt.ttf", 25);
+    bestHardScore = Label::createWithTTF("INSANE HIGH SCORE", "fonts/Marker Felt.ttf", 25);
     bestHardScore->enableShadow(Color4B::GRAY,Size(1,-1),0);
     bestHardScore->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height*0.22 + origin.y));
     bestHardScore->setColor(Color3B::BLACK);
@@ -98,6 +98,16 @@ void TextManager::printScoreAndHighScore() {
     PerformActions.fadeIn(bestEasyScore);
     PerformActions.fadeIn(bestMedScore);
     PerformActions.fadeIn(bestHardScore);
+}
+
+void TextManager::createTutorialInstructions() {
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    
+    instruction = Label::createWithTTF("Tap anywhere to move the bird and catch the correct colors", "fonts/Marker Felt.ttf", 16);
+    instruction->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height*0.38));
+    instruction->setTextColor(Color4B::BLACK);
+    currentScene->addChild(instruction,1);
 }
 
 

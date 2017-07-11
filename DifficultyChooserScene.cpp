@@ -11,6 +11,7 @@
 #include "TextManager.hpp"
 #include "ActionPerformer.hpp"
 #include "PlayScene.hpp"
+#include "LevelChooserScene.hpp"
 
 Scene* DifficultyChooserScene::createScene()
 {
@@ -38,11 +39,11 @@ bool DifficultyChooserScene::init() {
     
     auto menuItem1 = MenuItemFont::create("EASY", CC_CALLBACK_1(DifficultyChooserScene::Easy, this));
     auto menuItem2 = MenuItemFont::create("MEDIUM", CC_CALLBACK_1(DifficultyChooserScene::Medium, this));
-    auto menuItem3 = MenuItemFont::create("HARD", CC_CALLBACK_1(DifficultyChooserScene::Hard, this));
+    auto menuItem3 = MenuItemFont::create("INSANE", CC_CALLBACK_1(DifficultyChooserScene::Hard, this));
 
-    menuItem1->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height*0.4 + origin.y));
-    menuItem2->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height*0.3 + origin.y));
-    menuItem3->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height*0.2 + origin.y));
+    menuItem1->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height*0.35 + origin.y));
+    menuItem2->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height*0.25 + origin.y));
+    menuItem3->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height*0.15 + origin.y));
     
     menuItem1->setScale(0.6,0.6);
     menuItem2->setScale(0.6,0.6);
@@ -54,10 +55,20 @@ bool DifficultyChooserScene::init() {
     
     auto *menu = Menu::create(menuItem1, menuItem2, menuItem3, NULL);
     menu->setPosition(Vec2(0, 0));
+    
+    auto goBack = MenuItemFont::create("Back", CC_CALLBACK_1(DifficultyChooserScene::Back, this));
+    goBack->setPosition(Vec2(goBack->getContentSize().width/2 + origin.x, goBack->getContentSize().height/2 + origin.y));
+    goBack->setScale(0.6,0.6);
+    goBack->setColor(Color3B::BLACK);
+    auto *backButton = Menu::create(goBack, NULL);
+    backButton->setPosition(Vec2(0, 0));
+    
     this->addChild(menu);
+    this->addChild(backButton);
     PerformActions->fadeIn(menuItem1);
     PerformActions->fadeIn(menuItem2);
     PerformActions->fadeIn(menuItem3);
+    PerformActions->fadeIn(backButton);
 
     return true;
 }
@@ -81,5 +92,10 @@ void DifficultyChooserScene::Hard(Ref *pSender) {
     audio->playEffect("music/whoosh.wav", false, 1.0f, 1.0f, 1.0f);
     auto playScene = PlayScene::createScene();
     Director::getInstance()->replaceScene(playScene);
+}
+
+void DifficultyChooserScene::Back(Ref *pSender) {
+    auto backScene = LevelChooserScene::createScene();
+    Director::getInstance()->replaceScene(backScene);
 }
 
