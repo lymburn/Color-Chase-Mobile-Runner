@@ -1,6 +1,4 @@
 # Color-Chase-Mobile-Platformer
-The game is available on the App Store at https://itunes.apple.com/ca/app/color-chase-mind-trial/id1257259832?mt=8
-
 Color Chase - Mind Trial is an iOS game made with C++ and the Cocos2d-x game engine. It is a simple runner where the goal of the player is to move a bird around, by tapping, and collecting balls of the correct color. There is the word of a color on the top, and the text has a color too. The goal is to collect the ball with the same color as the text outline, not the word itself. The word is simply meant to confuse the brain and make it harder for the player to get the correct color. A Youtube demo is shown below.
 
 [![Color Chase](https://img.youtube.com/vi/w7NVNFEJumE/0.jpg)](https://www.youtube.com/watch?v=w7NVNFEJumE)
